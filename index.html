@@ -457,6 +457,70 @@ svg circle.cp,svg circle.cn{stroke:rgba(0,0,0,.28);stroke-width:.6}
   .hmeta{width:100%}
   .hchip{margin-left:auto}
 }
+/* ---------- Streak, Rangliste, Duell ---------- */
+.actrow{display:flex;align-items:center;gap:var(--s3);margin-bottom:var(--s3)}
+.actflame{position:relative;width:56px;height:56px;flex:none;display:grid;place-items:center;color:var(--line-strong)}
+.actflame svg{position:absolute;inset:0;width:100%;height:100%;fill:currentColor;opacity:.25}
+.actflame.warm{color:var(--warn)}
+.actflame.warm svg{opacity:.4}
+.actflame.lit{color:var(--accent-fill)}
+.actflame.lit svg{opacity:1}
+.actflame b{position:relative;margin-top:12px;font:700 var(--t-l)/1 var(--f-head);color:var(--ink);font-variant-numeric:tabular-nums}
+.actflame.lit b{color:#fff}
+.acttxt{flex:1;min-width:0}
+.acttxt h3{margin:0 0 2px}
+.acttxt p{margin:0;font:var(--t-s)/1.45 var(--f-ui)}
+.actweek{flex:none;text-align:right;font:var(--t-xs)/1.3 var(--f-ui);color:var(--ink-2)}
+.actweek b{display:block;font:700 var(--t-xl)/1 var(--f-head);color:var(--ink);font-variant-numeric:tabular-nums}
+.actheat{display:block;width:100%;max-width:360px;height:auto}
+.actheat text{font-size:9px;fill:var(--ink-2)}
+.hl0{fill:var(--fill)}
+.hl1{fill:color-mix(in srgb,var(--accent-fill) 28%,var(--surface))}
+.hl2{fill:color-mix(in srgb,var(--accent-fill) 52%,var(--surface))}
+.hl3{fill:color-mix(in srgb,var(--accent-fill) 76%,var(--surface))}
+.hl4{fill:var(--accent-fill)}
+.rkrow{display:flex;align-items:center;gap:var(--s3);padding:10px 0;border-top:1px solid var(--line);font:var(--t-s)/1.3 var(--f-ui)}
+.rkrow:first-child{border-top:none;padding-top:0}
+.rkrow.me .rkname{font-weight:700}
+.rkpos{width:28px;height:28px;flex:none;display:grid;place-items:center;border-radius:50%;background:var(--fill);font:700 var(--t-xs)/1 var(--f-ui);font-variant-numeric:tabular-nums}
+.rkrow.top .rkpos{background:var(--accent-fill);color:#fff}
+.rkname{flex:1;min-width:0;overflow-wrap:anywhere}
+.rkname em{font-style:normal;font-weight:400;color:var(--ink-2)}
+.rkname i{display:block;height:4px;margin-top:6px;border-radius:2px;background:var(--fill);overflow:hidden}
+.rkname i u{display:block;height:100%;border-radius:2px;background:var(--accent-fill)}
+.rkmin{flex:none;font-weight:600;font-variant-numeric:tabular-nums}
+.rkst{flex:none;display:inline-flex;align-items:center;justify-content:flex-end;gap:2px;min-width:40px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.rkst svg{width:14px;height:14px;fill:currentColor}
+.rkst.on{color:var(--accent-text)}
+.duitem{display:flex;align-items:center;gap:var(--s2);padding:var(--s2) 0;border-top:1px solid var(--line);font:var(--t-s)/1.4 var(--f-ui)}
+.duitem .gt{flex:1;min-width:0;overflow-wrap:anywhere}
+.duitem .gt small{display:block;color:var(--ink-2);font-size:var(--t-xs)}
+.dutag{flex:none;padding:2px 8px;border-radius:var(--r-tag);font:600 var(--t-xs)/1.5 var(--f-ui)}
+.dutag.win{background:var(--ok-bg);color:var(--ok)}
+.dutag.lose{background:var(--bad-bg);color:var(--bad)}
+.dutag.tie,.dutag.wait{background:var(--fill);color:var(--ink-2)}
+.duhead{position:sticky;top:0;z-index:3;display:flex;align-items:center;gap:var(--s3);padding:var(--s2) 0;margin-bottom:var(--s2);background:var(--paper)}
+.duprog{flex:1;min-width:0;font:600 var(--t-xs)/1.4 var(--f-ui);color:var(--ink-2)}
+.duprog i{display:block;height:6px;margin-top:4px;border-radius:3px;background:var(--fill);overflow:hidden}
+.duprog i u{display:block;height:100%;background:var(--accent-fill);transition:width .25s}
+.dutime{font:700 var(--t-l)/1 var(--f-head);font-variant-numeric:tabular-nums}
+.duvs{margin:0 0 var(--s3);font:var(--t-s)/1.4 var(--f-ui);color:var(--ink-2)}
+.duscore{display:flex;align-items:flex-end;justify-content:center;gap:var(--s4);margin:var(--s2) 0 var(--s3);text-align:center}
+.duscore span{display:block;margin-bottom:var(--s1);font:600 var(--t-xs)/1.4 var(--f-ui);color:var(--ink-2)}
+.duscore b{display:block;font:700 64px/1 var(--f-head);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.duscore .duc{font:700 40px/1.2 var(--f-head);color:var(--ink-2)}
+.duverdict{margin:0 0 var(--s1);text-align:center;font:700 var(--t-l)/1.3 var(--f-head)}
+.dusub{margin:0 0 var(--s3);text-align:center;font:var(--t-s)/1.5 var(--f-ui);color:var(--ink-2)}
+@media (max-width:760px){
+  .duhead{top:53px}
+  .duscore b{font-size:48px}
+  .actrow{flex-wrap:wrap}
+  .acttxt{flex:1 1 180px}
+  .actweek{order:3;flex-basis:100%;display:flex;align-items:baseline;gap:var(--s2);text-align:left}
+  .actweek b{display:inline;font-size:var(--t-l)}
+  .actheat{max-width:none}
+}
+
 /* ---------- Freunde ---------- */
 .stile{position:relative}
 .fbadge{position:absolute;top:-6px;right:-6px;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--bad);color:#fff;font:700 11px/18px var(--f-ui);text-align:center;box-shadow:0 0 0 2px var(--side)}
@@ -484,6 +548,7 @@ svg circle.cp,svg circle.cn{stroke:rgba(0,0,0,.28);stroke-width:.6}
 .frinbox{border-left:4px solid var(--accent-fill)}
 @media (max-width:760px){
   .themebtn{display:none}
+  .fbadge{top:-2px;right:-2px;min-width:16px;height:16px;padding:0 4px;font-size:10px;line-height:16px}
   .frtask{flex-wrap:wrap}
   .frtask .gt{flex-basis:calc(100% - 40px)}
   .frtask .chip{margin-left:28px}
@@ -578,6 +643,66 @@ svg circle.cp,svg circle.cn{stroke:rgba(0,0,0,.28);stroke-width:.6}
   .mdth{flex:1 1 50px;padding:var(--s1) 2px}
   .mdth .mdico{width:36px;height:36px}
   .mdth span{display:none}
+}
+
+/* ==========================================================================
+   Design «Studio»: hellgrau, Signalorange, flache Kacheln, Monospace-Etiketten.
+   Wird mit data-design="studio" auf <html> eingeschaltet (Konto-Fenster).
+   ========================================================================== */
+:root[data-design="studio"]{
+  --paper:#ECECE7; --surface:#F8F8F4; --sunken:#E2E2DB; --side:#F4F4EF; --seg:#FFFFFF; --field:#FFFFFF; --raised:#FFFFFF;
+  --fill:rgba(28,28,24,.07); --fill-2:rgba(28,28,24,.13); --fill-soft:rgba(28,28,24,.045);
+  --line:#D5D5CD; --line-strong:#77776F; --ink:#161614; --ink-2:#5B5B54; --on-ink:#F8F8F4;
+  --accent-fill:#FF5A1F; --accent-text:#B33A06; --focus:rgba(255,90,31,.55);
+  --r-tag:2px; --r-ctl:4px; --r-card:8px;
+  --f-head:"Inter","Segoe UI",sans-serif; --f-read:"Inter","Segoe UI",sans-serif; --f-ui:"Inter","Segoe UI",sans-serif;
+  --f-lab:ui-monospace,"SF Mono","Cascadia Mono",Consolas,"Roboto Mono",monospace;
+}
+@media (prefers-color-scheme: dark){:root[data-design="studio"]:not([data-theme="light"]){
+  --paper:#111110; --surface:#1A1A18; --sunken:#252522; --side:#161615; --seg:#3A3A36; --field:#22221F; --raised:#252522;
+  --fill:rgba(255,255,245,.08); --fill-2:rgba(255,255,245,.14); --fill-soft:rgba(255,255,245,.05);
+  --line:#32322E; --line-strong:#8B8B83; --ink:#EEEDE7; --ink-2:#A4A49B; --on-ink:#161614;
+  --accent-fill:#FF5A1F; --accent-text:#FF8A5C; --focus:rgba(255,138,92,.55);
+}}
+:root[data-design="studio"][data-theme="dark"]{
+  --paper:#111110; --surface:#1A1A18; --sunken:#252522; --side:#161615; --seg:#3A3A36; --field:#22221F; --raised:#252522;
+  --fill:rgba(255,255,245,.08); --fill-2:rgba(255,255,245,.14); --fill-soft:rgba(255,255,245,.05);
+  --line:#32322E; --line-strong:#8B8B83; --ink:#EEEDE7; --ink-2:#A4A49B; --on-ink:#161614;
+  --accent-fill:#FF5A1F; --accent-text:#FF8A5C; --focus:rgba(255,138,92,.55);
+}
+[data-design="studio"] aside h1{letter-spacing:-.035em}
+[data-design="studio"] aside .sub,[data-design="studio"] .hkick,[data-design="studio"] .subj .pr,[data-design="studio"] .hlab,[data-design="studio"] .hchip,[data-design="studio"] .sectiontitle,[data-design="studio"] .card h4,[data-design="studio"] .gform label,[data-design="studio"] .gcalc label,[data-design="studio"] .gx label,[data-design="studio"] .duprog,[data-design="studio"] .duscore span,[data-design="studio"] .actweek,[data-design="studio"] .tiles3 span{font-family:var(--f-lab);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.07em}
+[data-design="studio"] .subj.active{background:var(--ink);color:var(--on-ink)}
+[data-design="studio"] .subj.active .pr{color:color-mix(in srgb,var(--on-ink) 72%,transparent)}
+[data-design="studio"] .subj.active .smini{background:color-mix(in srgb,var(--on-ink) 25%,transparent)}
+[data-design="studio"] .subj.active .smini i{background:var(--accent-fill)}
+[data-design="studio"] .subj.active.gnav .stile{box-shadow:none}
+[data-design="studio"] .stile{background:var(--b);border-radius:var(--r-ctl)}
+[data-design="studio"] .hicon{background:var(--g2);border-radius:var(--r-card)}
+[data-design="studio"] .hero h2{font-size:40px;letter-spacing:-.04em}
+[data-design="studio"] .tabs{width:100%;gap:var(--s4);padding:0;border-radius:0;background:none;border-bottom:1px solid var(--line)}
+[data-design="studio"] .tab{padding:10px 0;margin-bottom:-1px;border-radius:0;border-bottom:2px solid transparent;color:var(--ink-2);font:600 11px/1.4 var(--f-lab);text-transform:uppercase;letter-spacing:.08em}
+[data-design="studio"] .tab.active{background:none;box-shadow:none;color:var(--ink);border-bottom-color:var(--accent-fill)}
+[data-design="studio"] .card{border:1px solid var(--line)}
+[data-design="studio"] .card h3{letter-spacing:-.03em}
+[data-design="studio"] .sectiontitle{margin-top:var(--s5);padding-top:var(--s3);border-top:1px solid var(--line);color:var(--ink-2)}
+[data-design="studio"] .gsecavg{font-family:var(--f-lab);font-size:11px}
+[data-design="studio"] .btn{border-radius:var(--r-ctl);color:#161614;font:600 12px/1.3 var(--f-lab);text-transform:uppercase;letter-spacing:.07em;padding:11px 16px}
+[data-design="studio"] .btn.ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1px var(--line-strong)}
+[data-design="studio"] .btn.ghost:hover{background:var(--fill)}
+[data-design="studio"] .chip{border-radius:var(--r-tag);font:600 11px/1.4 var(--f-lab);text-transform:uppercase;letter-spacing:.06em}
+[data-design="studio"] .chip.on{background:var(--ink);color:var(--on-ink)}
+[data-design="studio"] .themebtn,[data-design="studio"] .syncbtn{border-radius:var(--r-ctl);font:600 11px/1.4 var(--f-lab);text-transform:uppercase;letter-spacing:.05em}
+[data-design="studio"] .big,[data-design="studio"] .gbig b,[data-design="studio"] .tiles3 b,[data-design="studio"] .duscore b,[data-design="studio"] .actweek b,[data-design="studio"] .dutime,[data-design="studio"] .gavg,[data-design="studio"] .rkmin{font-family:var(--f-lab);font-weight:600;letter-spacing:-.04em}
+[data-design="studio"] .countdown .big{color:var(--accent-text)}
+[data-design="studio"] .rkpos,[data-design="studio"] .fbadge{border-radius:var(--r-tag)}
+[data-design="studio"] .dutag{font:600 11px/1.6 var(--f-lab);text-transform:uppercase;letter-spacing:.06em}
+[data-design="studio"] .rkrow.top .rkpos,[data-design="studio"] .actflame.lit b{color:#161614}
+[data-design="studio"] .progress,[data-design="studio"] .smini,[data-design="studio"] .gbar,[data-design="studio"] .frbar i,[data-design="studio"] .rkname i,[data-design="studio"] .duprog i{border-radius:0}
+[data-design="studio"] .progress>i,[data-design="studio"] .smini i,[data-design="studio"] .gbar i,[data-design="studio"] .frbar i u,[data-design="studio"] .rkname i u{border-radius:0}
+@media (max-width:760px){
+  [data-design="studio"] .hero h2{font-size:30px}
+  [data-design="studio"] .tabs{gap:var(--s3)}
 }
 </style>
 </head>
@@ -4087,6 +4212,7 @@ $('#themeBtn').onclick = () => {
   r.dataset.theme = dark ? 'light' : 'dark'; store.set('theme', r.dataset.theme);
 };
 const th = store.get('theme',null); if(th) document.documentElement.dataset.theme = th;
+if(store.get('design', null)==='studio') document.documentElement.dataset.design = 'studio';
 
 /* ---------- Sichern und übertragen: ganzer Stand als Datei oder Code ---------- */
 // Nicht mitgenommen: die Farbwahl des Geräts und die automatische Sicherung vor dem Laden
@@ -4141,7 +4267,11 @@ function openSync(){
   $('#syncUse').onclick = () => { const t = $('#syncCode').value; if(!t.trim()){ msg('Füge zuerst einen Code ein.', false); return; } load(t); };
   if($('#syncUndo')) $('#syncUndo').onclick = () => { if(confirm('Den gesicherten Stand wiederherstellen? Dein jetziger Stand wird dafür ebenfalls gesichert.')) syncApply(bk); };
   accountBind();
-  const tb = document.createElement('div'); tb.className = 'row'; tb.style.marginTop = 'var(--s3)'; tb.innerHTML = '<button class="chip" type="button" id="dlgTheme">Hell / Dunkel</button>'; dlg.appendChild(tb); $('#dlgTheme').onclick = () => $('#themeBtn').click();
+  const tb = document.createElement('div'); tb.className = 'row'; tb.style.marginTop = 'var(--s3)'; const dsg = () => document.documentElement.dataset.design==='studio' ? 'studio' : 'apple';
+  tb.innerHTML = '<button class="chip" type="button" id="dlgTheme">Hell / Dunkel</button><span class="muted" style="font:var(--t-xs)/1.4 var(--f-ui);margin-left:var(--s2)">Design:</span><button class="chip" type="button" data-dsg="apple">Apple</button><button class="chip" type="button" data-dsg="studio">Studio</button>';
+  dlg.appendChild(tb); $('#dlgTheme').onclick = () => $('#themeBtn').click();
+  const dsgMark = () => tb.querySelectorAll('[data-dsg]').forEach(b => b.classList.toggle('on', b.dataset.dsg===dsg())); dsgMark();
+  tb.querySelectorAll('[data-dsg]').forEach(b => b.onclick = () => { if(b.dataset.dsg==='studio') document.documentElement.dataset.design = 'studio'; else delete document.documentElement.dataset.design; store.set('design', b.dataset.dsg); dsgMark(); });
   if(!dlg.open) dlg.showModal();
 }
 
@@ -4149,7 +4279,7 @@ function openSync(){
 // Diese zwei Werte sind laut Firebase öffentlich. Geschützt wird über die Firestore-Regeln: jedes Konto liest und schreibt nur sein eigenes Dokument.
 const FB = {apiKey:'AIzaSyBESKEyaqqZaoMrg2JExB9iLIFT2leBPU8', projectId:'lerntool-bin26a'};
 const fbOn = () => !!(FB.apiKey && FB.projectId);
-const CLOUD_LOCAL = ['theme', 'subject', 'tab', 'auth', 'grpseen', 'grppub', 'grplast'];   // gilt nur für dieses Gerät
+const CLOUD_LOCAL = ['theme', 'design', 'subject', 'tab', 'auth', 'grpseen', 'grppub', 'grplast'];   // gilt nur für dieses Gerät
 const cloudKey = k => !CLOUD_LOCAL.includes(k) && !k.startsWith('sync.');
 const CL = {status:'off', msg:'', last:0, busy:false, again:false, timer:null, pending:null};
 const lsGet = k => { try{ return JSON.parse(localStorage.getItem('lt.'+k) || 'null'); }catch(e){ return null; } };
@@ -4279,7 +4409,7 @@ async function cloudLogout(wipe){
 function cloudApplied(keys){
   if(!keys.length) return;
   const ae = document.activeElement, typing = ae && /INPUT|TEXTAREA|SELECT/.test(ae.tagName) && ae.closest('#main');
-  const busy = typing || exOpen!==null || (PT[cur] && PT[cur].phase==='run') || (cur==='bn' && tab==='lab' && MD.r);
+  const busy = typing || exOpen!==null || (PT[cur] && PT[cur].phase==='run') || (cur==='bn' && tab==='lab' && MD.r) || (cur==='friends' && DU.play && !DU.play.done);
   if(!busy){ render(); return; }
   renderSide();
   let t = $('#cltoast'); if(!t){ t = document.createElement('div'); t.id = 'cltoast'; t.className = 'toast'; t.setAttribute('role', 'status'); document.body.appendChild(t); }
@@ -4354,7 +4484,7 @@ $('#syncBtn').onclick = openSync;
 // Wer den Code kennt, kann beitreten. Lesen dürfen nur Mitglieder, eigene Einträge ändert nur der Besitzer (siehe Firestore-Regeln).
 const FR_ICON = '<circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.6"/><path d="M15.5 14.2c3 .2 5.5 2.6 5.5 5.8"/>';
 const FR_TILE = {g1:'#5EEAD4', g2:'#0D9488'};
-const FR = {min7:'', members:null, tasks:null, inbox:[], err:'', busy:false, t:0, to:null, draft:'', pubT:null};
+const FR = {min7:'', duels:null, members:null, tasks:null, inbox:[], err:'', busy:false, t:0, to:null, draft:'', pubT:null};
 const FR_ABC = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 const frGrp = () => { const g = store.get('grp', null); return g && typeof g.id==='string' && /^[A-Z2-9]{8}$/.test(g.id) && typeof g.me==='string' ? g : null; };
 const frOn = () => fbOn() && !!lsGet('auth');
@@ -4384,7 +4514,8 @@ function frProgress(){ const p = {}; SUBJECTS.forEach(x => { if(BANKS[x.id]) p[x
 async function frPublish(force, gg){
   const g = gg || frGrp(); if(!g || !frOn()) return;
   const a = lsGet('auth'), srv = FR.members && FR.members.find(m => m.id===a.uid);
-  const doc = {name:g.me, p:frProgress(), last:Math.max(lsGet('grplast') || 0, srv && typeof srv.last==='number' ? srv.last : 0)};
+  const as = actStats();
+  const doc = {name:g.me, p:frProgress(), last:Math.max(lsGet('grplast') || 0, srv && typeof srv.last==='number' ? srv.last : 0), wk:as.wk, wm:as.week, st:as.streak, sd:ymd(new Date())};
   const key = g.id + JSON.stringify(doc);
   if(!force && lsGet('grppub')===key) return;
   const {r} = await fsReq(frPath(g, 'members', a.uid), 'PATCH', {fields:fsFields({...doc, at:Date.now()})});
@@ -4395,7 +4526,7 @@ async function frPublish(force, gg){
 const frPubSoon = () => { clearTimeout(FR.pubT); FR.pubT = setTimeout(() => { frPublish().catch(() => {}); }, 15000); };
 // Lernen merken: jede Änderung an Lernständen zählt als «zuletzt aktiv»
 const storeSetCloud = store.set;
-store.set = (k, v) => { storeSetCloud(k, v); if(!/^(grades|grp|subject|tab|theme|notes|sync|auth)/.test(k)){ lsSet('grplast', Date.now()); if(frGrp() && frOn()) frPubSoon(); } };
+store.set = (k, v) => { storeSetCloud(k, v); if(!/^(grades|grp|subject|tab|theme|design|notes|sync|auth|act)/.test(k)){ lsSet('grplast', Date.now()); if(frGrp() && frOn()) frPubSoon(); } };
 
 const frName = uid => { const m = FR.members && FR.members.find(x => x.id===uid); return m ? frStr(m.name, 30) : ''; };
 function frNotify(fresh){
@@ -4430,7 +4561,7 @@ async function frLoad(){
     let mem;
     try{ mem = await fsList(frPath(g, 'members')); }
     catch(e){ await frPublish(true, g); mem = await fsList(frPath(g, 'members')); }   // eigener Eintrag fehlte: neu eintragen
-    FR.members = mem; FR.tasks = await fsList(frPath(g, 'tasks')); FR.t = Date.now();
+    FR.members = mem; FR.tasks = await fsList(frPath(g, 'tasks')); FR.duels = await fsList(frPath(g, 'duels')); FR.t = Date.now();
     await frPublish(!mem.some(m => m.id===lsGet('auth').uid), g);
   }catch(e){ FR.err = e.message; }
   FR.busy = false;
@@ -4444,7 +4575,8 @@ function frAgo(ts){
 }
 function frNavHtml(){
   const g = frGrp(), n = g && frOn() ? FR.inbox.length : 0;
-  const info = !g ? 'Gruppe beitreten' : n ? n + ' Erinnerung' + (n===1 ? '' : 'en') : 'Gruppe ' + frStr(g.name, 40);
+  const sk = actStats().streak;
+  const info = n ? n + ' Erinnerung' + (n===1 ? '' : 'en') : sk ? 'Streak ' + sk + (sk===1 ? ' Tag' : ' Tage') : !g ? 'Gruppe beitreten' : 'Gruppe ' + frStr(g.name, 40);
   return '<button class="subj gnav ' + (cur==='friends' ? 'active' : '') + '" data-s="friends" title="Freunde und Hausaufgaben" style="--a:' + FR_TILE.g1 + ';--b:' + FR_TILE.g2 + '">'
     + '<span class="stile"><svg viewBox="0 0 24 24" aria-hidden="true">' + FR_ICON + '</svg>' + (n ? '<span class="fbadge" aria-label="' + n + ' neue Erinnerungen">' + (n>9 ? '9+' : n) + '</span>' : '') + '</span>'
     + '<span class="txt"><span class="nm">Freunde</span><span class="pr">' + esc(info) + '</span></span></button>';
@@ -4476,6 +4608,8 @@ function frPaint(){
             + '<div class="row" style="margin-top:var(--s2)"><button class="btn" id="frSendGo">Senden</button><button class="btn ghost" id="frSendX">Abbrechen</button></div><p class="fb" id="frSendMsg" role="status"></p></div>' : '')
           + '</div>'; }).join('') + (FR.members && list.length===1 ? '<p class="muted">Noch bist du allein in der Gruppe. Schick den Code unten an deine Freunde.</p>' : ''));
   }
+  const rk = $('#frRank'); if(rk) rk.innerHTML = FR.members===null ? '<p class="muted">Lädt …</p>' : frRankHtml();
+  const du = $('#frDuels'); if(du && !frTyping('frDuels')) du.innerHTML = frDuelsHtml();
   const tb = $('#frTasks');
   if(tb && !frTyping('frTasks')) tb.innerHTML = FR.tasks===null ? '' : !tasks.length ? '<p class="muted" style="margin:var(--s3) 0 0">Noch keine Hausaufgaben eingetragen.</p>' : tasks.map(t => {
       const dn = !!done[t.id], late = !dn && t.due && t.due < today, mine = t.by===a.uid, due = typeof t.due==='string' && /^\d{4}-\d{2}-\d{2}$/.test(t.due) ? t.due : '';
@@ -4494,6 +4628,7 @@ async function frSend(to, text, task){
 }
 function frBind(){
   const m = $('#main'), g = frGrp(); if(!g) return;
+  duBind();
   m.querySelectorAll('[data-frok]').forEach(b => b.onclick = async () => { b.disabled = true;
     try{ const {r} = await fsReq(frPath(g, 'members', lsGet('auth').uid, 'inbox', b.dataset.frok), 'DELETE'); if(!r.ok && r.status!==404) throw frErr(r); FR.inbox = FR.inbox.filter(x => x.id!==b.dataset.frok); renderSide(); frPaint(); }
     catch(e){ b.disabled = false; alert(e.message); } });
@@ -4520,16 +4655,17 @@ function frBind(){
 }
 function frToast(txt){ let t = $('#frtoast'); if(!t){ t = document.createElement('div'); t.id = 'frtoast'; t.className = 'toast'; t.setAttribute('role', 'status'); document.body.appendChild(t); } t.innerHTML = '<span></span>'; t.querySelector('span').textContent = txt; clearTimeout(frToast.t); frToast.t = setTimeout(() => t.remove(), 3500); }
 function viewFriends(){
+  if(DU.play && frGrp() && frOn()) return duView();
   const m = $('#main'), g = frGrp(), a = frOn() ? lsGet('auth') : null;
   FR.min7 = (() => { const d = pDate(gToday()); d.setDate(d.getDate() - 7); return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); })();
   const hero = sub => '<header class="hero ghero"><span class="hicon"><svg viewBox="0 0 24 24" aria-hidden="true">' + FR_ICON + '</svg></span><div class="htxt"><p class="hkick">BIN26a · BMZ</p><h2>Freunde</h2><p class="hsub">' + sub + '</p></div></header>';
   const privacy = '<p class="ghint">Deine Gruppe sieht nur deinen Namen, wie viel Prozent du pro Fach verstanden hast und wann du zuletzt gelernt hast. Noten, Notizen und deine E-Mail bleiben privat.</p>';
   if(!a){
-    m.innerHTML = hero('Fortschritt teilen, Hausaufgaben und Erinnerungen') + '<div id="view"><div class="card"><h3>Melde dich zuerst an</h3><p class="muted">Für die Klassengruppe brauchst du ein Konto. Dann siehst du, wie weit deine Freunde sind, und ihr könnt euch an Hausaufgaben erinnern.</p><div class="row"><button class="btn" id="frLogin">Anmelden oder Konto erstellen</button></div>' + privacy + '</div></div>';
+    m.innerHTML = hero('Fortschritt teilen, Hausaufgaben und Erinnerungen') + '<div id="view">' + actCard() + '<div class="card"><h3>Melde dich zuerst an</h3><p class="muted">Für die Klassengruppe brauchst du ein Konto. Dann siehst du, wie weit deine Freunde sind, und ihr könnt euch an Hausaufgaben erinnern.</p><div class="row"><button class="btn" id="frLogin">Anmelden oder Konto erstellen</button></div>' + privacy + '</div></div>';
     $('#frLogin').onclick = openSync; return;
   }
   if(!g){
-    m.innerHTML = hero('Fortschritt teilen, Hausaufgaben und Erinnerungen') + '<div id="view">'
+    m.innerHTML = hero('Fortschritt teilen, Hausaufgaben und Erinnerungen') + '<div id="view">' + actCard()
       + '<div class="card"><h3>Gruppe beitreten</h3><p class="muted">Frag jemanden aus deiner Gruppe nach dem Code.</p><div class="gform"><label class="gl-n">Code<input type="text" id="frJC" maxlength="12" placeholder="ABCD-EFGH" autocomplete="off" autocapitalize="characters" spellcheck="false"></label><label class="gl-t">Dein Name in der Gruppe<input type="text" id="frJN" maxlength="30" placeholder="z. B. Alex"></label></div>'
       + '<div class="row" style="margin-top:var(--s3)"><button class="btn" id="frJoin">Beitreten</button></div><p class="fb" id="frJMsg" role="status"></p></div>'
       + '<div class="card"><h3>Neue Gruppe erstellen</h3><p class="muted">Du bekommst einen Code, den du in den Klassenchat schicken kannst.</p><div class="gform"><label class="gl-t">Name der Gruppe<input type="text" id="frNG" maxlength="40" value="BIN26a"></label><label class="gl-t">Dein Name in der Gruppe<input type="text" id="frNN" maxlength="30" placeholder="z. B. Alex"></label></div>'
@@ -4567,7 +4703,9 @@ function viewFriends(){
   const canN = typeof Notification!=='undefined';
   const subOpts = '<option value="">Allgemein</option>' + SUBJECTS.map(x => '<option value="' + x.id + '">' + esc(x.label) + '</option>').join('');
   m.innerHTML = hero('Gruppe «' + esc(frStr(g.name, 40)) + '» · Code ' + frFmt(g.id)) + '<div id="view">'
-    + '<div id="frInbox"></div>'
+    + '<div id="frInbox"></div>' + actCard()
+    + '<div class="card"><h3>Rangliste diese Woche</h3><div id="frRank"></div><p class="ghint">Gezählt werden aktive Lernminuten von Montag bis Sonntag. Daneben steht der Streak.</p></div>'
+    + '<div class="card"><h3>Quiz-Duell</h3><div id="frDuels"></div></div>'
     + '<div class="card"><h3>Wer ist wie weit?</h3><div id="frMembers"></div><div class="row" style="margin-top:var(--s3)"><button class="btn ghost" id="frReload">Aktualisieren</button></div></div>'
     + '<div class="card"><h3>Hausaufgaben und Termine</h3><p class="muted">Alle in der Gruppe sehen die Liste. Abhaken gilt nur für dich.</p>'
     + '<div class="gform"><label>Fach<select id="frTS">' + subOpts + '</select></label><label class="gl-t">Was?<input type="text" id="frTT" maxlength="120" placeholder="z. B. Aufgabe 27 fertig lösen"></label><label>Bis<input type="date" id="frTD"></label></div>'
@@ -4602,6 +4740,185 @@ function viewFriends(){
     catch(e){ alert(e.message); } };
   if(Date.now() - FR.t > 20000) frLoad();
 }
+/* ---------- Lern-Streak: aktive Lernminuten pro Tag ---------- */
+const ACT_MIN = 5;   // ab so vielen Minuten zählt ein Tag für den Streak
+const FLAME = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22.5c4.6 0 7.5-3 7.5-6.9 0-3.6-2.3-5.9-3.8-7.9-.4 1.7-1.3 2.8-2.3 3.3.1-3.6-1.2-6.9-4.1-9.5.3 3.2-1.4 5.5-3 7.6-1.3 1.7-2 3.6-2 6.5 0 3.9 2.9 6.9 7.7 6.9z"/></svg>';
+const ymd = d => d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+const actData = () => { const a = store.get('act', null); return a && typeof a==='object' && a.d && typeof a.d==='object' && !Array.isArray(a.d) ? a : {d:{}, lm:''}; };
+let actLm = '';
+function actTick(){
+  const now = new Date(), day = ymd(now), mk = day + ' ' + now.getHours() + ':' + now.getMinutes();
+  if(mk===actLm) return; actLm = mk;
+  const a = actData(); if(a.lm===mk) return;
+  a.lm = mk; a.d[day] = (a.d[day] || 0) + 1;
+  const cut = new Date(now); cut.setDate(cut.getDate() - 120); const ck = ymd(cut);
+  Object.keys(a.d).forEach(k => { if(k < ck) delete a.d[k]; });
+  storeSetCloud('act', a); lsSet('grplast', Date.now());
+  if(frGrp() && frOn()) frPubSoon();
+  if(a.d[day]===ACT_MIN) renderSide();
+}
+function actStats(){
+  const a = actData(), now = new Date(), tk = ymd(now), cnt = k => typeof a.d[k]==='number' ? a.d[k] : 0;
+  let streak = 0; const d = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  if(cnt(tk) < ACT_MIN) d.setDate(d.getDate() - 1);
+  while(cnt(ymd(d)) >= ACT_MIN){ streak++; d.setDate(d.getDate() - 1); }
+  const mon = new Date(now.getFullYear(), now.getMonth(), now.getDate()); mon.setDate(mon.getDate() - ((mon.getDay() + 6) % 7));
+  let week = 0; for(let i = 0; i < 7; i++){ const x = new Date(mon); x.setDate(mon.getDate() + i); week += cnt(ymd(x)); }
+  return {streak, today:cnt(tk), week, wk:ymd(mon), lit:cnt(tk) >= ACT_MIN, d:a.d};
+}
+// Jede Bedienung in einem Fach (oder im Duell) zählt als aktive Minute
+['pointerdown','keydown','input','wheel','touchstart'].forEach(ev => document.addEventListener(ev, () => { if(document.visibilityState==='visible' && (SUBJECTS.some(x => x.id===cur) || (cur==='friends' && DU.play))) actTick(); }, {passive:true, capture:true}));
+window.addEventListener('scroll', () => { if(document.visibilityState==='visible' && SUBJECTS.some(x => x.id===cur)) actTick(); }, {passive:true});
+function actHeat(d){
+  const t = new Date(), today = new Date(t.getFullYear(), t.getMonth(), t.getDate());
+  const start = new Date(today); start.setDate(start.getDate() - ((start.getDay() + 6) % 7) - 7*11);
+  const S = 13, G = 3, L = 22, out = [];
+  ['Mo','Mi','Fr'].forEach((n,i) => out.push('<text x="0" y="' + (i*2*(S+G) + 10) + '">' + n + '</text>'));
+  for(let w = 0; w < 12; w++) for(let r = 0; r < 7; r++){
+    const x = new Date(start); x.setDate(start.getDate() + w*7 + r); if(x > today) continue;
+    const m = typeof d[ymd(x)]==='number' ? d[ymd(x)] : 0, lv = m===0 ? 0 : m < ACT_MIN ? 1 : m < 15 ? 2 : m < 30 ? 3 : 4;
+    out.push('<rect x="' + (L + w*(S+G)) + '" y="' + (r*(S+G)) + '" width="' + S + '" height="' + S + '" rx="2" class="hl' + lv + '"><title>' + x.toLocaleDateString('de-CH', {weekday:'short', day:'numeric', month:'numeric'}) + ': ' + m + ' Min.</title></rect>');
+  }
+  return '<svg class="actheat" viewBox="0 0 ' + (L + 12*(S+G) - G) + ' ' + (7*(S+G) - G) + '" role="img" aria-label="Lernminuten der letzten 12 Wochen, je dunkler, desto mehr">' + out.join('') + '</svg>';
+}
+function actCard(){
+  const s = actStats(), left = ACT_MIN - s.today;
+  const txt = s.lit ? 'Heute geschafft: ' + s.today + ' Minuten gelernt.' : s.streak ? 'Heute ' + s.today + ' von ' + ACT_MIN + ' Minuten. Lern noch ' + left + ' Minute' + (left===1 ? '' : 'n') + ', dann hält dein Streak.' : 'Lern heute ' + ACT_MIN + ' Minuten, dann startet dein Streak.';
+  return '<div class="card"><div class="actrow"><div class="actflame' + (s.lit ? ' lit' : s.streak ? ' warm' : '') + '">' + FLAME + '<b>' + s.streak + '</b></div>'
+    + '<div class="acttxt"><h3>' + (s.streak ? s.streak + (s.streak===1 ? ' Tag' : ' Tage') + ' am Stück' : 'Noch kein Streak') + '</h3><p class="muted">' + txt + '</p></div>'
+    + '<div class="actweek"><b>' + s.week + '</b>Min. diese Woche</div></div>' + actHeat(s.d)
+    + '<p class="ghint">Gezählt werden Minuten, in denen du in einem Fach etwas machst: lesen, Aufgaben lösen, Karteikarten, Labor, Duelle. Ein Tag zählt ab ' + ACT_MIN + ' Minuten.</p></div>';
+}
+function frRankHtml(){
+  const me = lsGet('auth').uid, as = actStats(), today = ymd(new Date()), y = new Date(); y.setDate(y.getDate() - 1); const yd = ymd(y);
+  const num = v => typeof v==='number' && isFinite(v) ? Math.max(0, Math.round(v)) : 0;
+  const rows = (FR.members || []).map(m => ({id:m.id, name:frStr(m.name, 30) || 'Ohne Namen', wm:m.wk===as.wk ? num(m.wm) : 0, st:m.sd===today || m.sd===yd ? num(m.st) : 0}))
+    .sort((p,q) => q.wm - p.wm || q.st - p.st || p.name.localeCompare(q.name, 'de'));
+  const max = Math.max(1, ...rows.map(r => r.wm));
+  return rows.map((r,i) => '<div class="rkrow' + (r.id===me ? ' me' : '') + (i===0 && r.wm>0 ? ' top' : '') + '"><span class="rkpos">' + (i+1) + '</span><span class="rkname">' + esc(r.name) + (r.id===me ? ' <em>(du)</em>' : '')
+    + '<i><u style="width:' + (r.wm/max*100).toFixed(1) + '%"></u></i></span><span class="rkmin">' + r.wm + ' Min.</span><span class="rkst' + (r.st ? ' on' : '') + '" title="Streak: ' + r.st + ' Tage">' + FLAME + r.st + '</span></div>').join('');
+}
+
+/* ---------- Quiz-Duell: gleiche 8 Fragen für beide, erzeugt aus einem gemeinsamen Zufallsschlüssel ---------- */
+// In der Cloud steht nur der Schlüssel, nie Fragen-HTML: so kann niemand über ein Duell fremden Code einschleusen.
+const DUEL_N = 8, DU = {play:null, timer:null};
+function mulberry(a){ return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+function duelQs(subj, seed){ const R = Math.random; Math.random = mulberry(seed); try{ return buildPTest(subj, DUEL_N, BANKS[subj]().topics); } finally{ Math.random = R; } }
+function duelFp(subj){ const k = BANKS[subj]().bank.map(b => b.key).join('|'); let h = 0; for(let i = 0; i < k.length; i++) h = (Math.imul(h, 31) + k.charCodeAt(i)) | 0; return (h >>> 0).toString(36) + '.' + k.length; }
+const duOk = id => typeof id==='string' && Object.prototype.hasOwnProperty.call(BANKS, id);
+const duSubjects = () => SUBJECTS.filter(x => duOk(x.id));
+const duLabel = id => (SUBJECTS.find(x => x.id===id) || {label:''}).label;
+function duRes(str, n){
+  try{ const o = JSON.parse(str); if(!o || typeof o.s!=='number' || typeof o.t!=='number') return null;
+    return {s:Math.max(0, Math.min(n, Math.round(o.s*10)/10)), t:Math.max(0, Math.round(o.t)), d:Array.isArray(o.d) ? o.d.slice(0, n).map(x => typeof x==='number' ? Math.max(0, Math.min(1, x)) : 0) : []}; }catch(e){ return null; }
+}
+const duFmt = x => String(Math.round(x*10)/10).replace('.', ',');
+const duTime = t => Math.floor(t/60) + ':' + String(t%60).padStart(2,'0');
+// 1 = erster gewinnt, -1 = zweiter, 0 = unentschieden
+const duCmp = (x, y) => x.s!==y.s ? (x.s > y.s ? 1 : -1) : x.t!==y.t ? (x.t < y.t ? 1 : -1) : 0;
+function duStart(o){
+  const qs = duelQs(o.subj, o.seed);
+  if(!qs.length){ alert('Für dieses Fach gibt es noch keine Fragen.'); return; }
+  DU.play = {...o, qs, i:0, t0:Date.now(), done:false, res:null, saved:false, saving:false, err:''};
+  render(); window.scrollTo(0,0);
+}
+function duView(){
+  const P = DU.play, m = $('#main'), lab = duLabel(P.subj);
+  clearInterval(DU.timer);
+  if(!P.done){
+    const q = P.qs[P.i], last = P.i===P.qs.length - 1;
+    m.innerHTML = '<div class="duhead"><button class="btn ghost" id="duX">Abbrechen</button><div class="duprog">Frage ' + (P.i+1) + ' von ' + P.qs.length + '<i><u style="width:' + (P.i/P.qs.length*100).toFixed(1) + '%"></u></i></div><b class="dutime" id="duTime">0:00</b></div>'
+      + '<p class="duvs">Quiz-Duell gegen <b>' + esc(P.opp.name) + '</b> · ' + esc(lab) + '</p><div id="duQ"></div>'
+      + '<div class="row" style="justify-content:flex-end;margin-top:var(--s3)"><button class="btn" id="duNext">' + (last ? 'Fertig' : 'Weiter') + '</button></div>';
+    $('#duQ').appendChild(ptQEl(q, P.i, false));
+    const tick = () => { const el = $('#duTime'); if(el) el.textContent = duTime(Math.floor((Date.now() - P.t0)/1000)); };
+    tick(); DU.timer = setInterval(tick, 500);
+    const next = () => {
+      if(!ptAnswered(q) && !confirm('Diese Frage ist noch offen. Trotzdem weiter?')) return;
+      if(!last){ P.i++; duView(); window.scrollTo(0,0); } else duFinish();
+    };
+    $('#duNext').onclick = next;
+    $('#duQ').querySelectorAll('input[type=text]').forEach(i => i.addEventListener('keydown', ev => { if(ev.key==='Enter'){ ev.preventDefault(); next(); } }));
+    const first = $('#duQ').querySelector('input[type=text]'); if(first) first.focus({preventScroll:true});
+    $('#duX').onclick = () => { if(confirm(P.mine==='a' ? 'Duell abbrechen? Die Herausforderung wird nicht gesendet.' : 'Duell abbrechen? Du kannst es später nochmals von vorne spielen.')){ clearInterval(DU.timer); DU.play = null; render(); } };
+    return;
+  }
+  const r = P.res, o = P.other, c = o ? duCmp(r, o) : null;
+  const verdict = P.mine==='a' ? 'Herausforderung ' + (P.saved ? 'gesendet' : P.saving ? 'wird gesendet …' : 'noch nicht gesendet') : c===1 ? 'Gewonnen!' : c===-1 ? 'Verloren' : 'Unentschieden';
+  const sub = P.mine==='a' ? 'Sobald ' + esc(P.opp.name) + ' gespielt hat, siehst du hier und unter «Quiz-Duell», wer gewonnen hat.' : 'Bei gleich vielen Punkten gewinnt die schnellere Zeit.';
+  m.innerHTML = '<div class="card"><div class="duscore"><div><span>Du</span><b>' + duFmt(r.s) + '</b></div><div class="duc">:</div><div><span>' + esc(P.opp.name) + '</span><b>' + (o ? duFmt(o.s) : '?') + '</b></div></div>'
+    + '<p class="duverdict">' + verdict + '</p><p class="dusub">' + P.qs.length + ' Fragen · deine Zeit ' + duTime(r.t) + (o ? ' · Zeit von ' + esc(P.opp.name) + ' ' + duTime(o.t) : '') + '<br>' + sub + '</p>'
+    + (P.err ? '<p class="fb bad" style="text-align:center">' + esc(P.err) + '</p>' : '')
+    + '<div class="row" style="justify-content:center"><button class="btn" id="duBack">Zurück zu Freunde</button>' + (P.err ? '<button class="btn ghost" id="duRetry">Nochmals senden</button>' : '') + '</div></div>'
+    + '<h3 class="sectiontitle">Deine Antworten</h3><div id="duReview"></div>';
+  const rv = $('#duReview'); P.qs.forEach((q,i) => rv.appendChild(ptQEl(q, i, true)));
+  $('#duBack').onclick = () => { if(P.saving) return; DU.play = null; FR.t = 0; render(); window.scrollTo(0,0); };
+  if($('#duRetry')) $('#duRetry').onclick = () => duSave();
+}
+function duFinish(){
+  const P = DU.play; clearInterval(DU.timer);
+  const d = P.qs.map(q => { q.score = scoreQ(q); return Math.round(q.score*100)/100; });
+  P.res = {s:Math.round(d.reduce((x,y) => x + y, 0)*10)/10, t:Math.round((Date.now() - P.t0)/1000), d};
+  P.done = true; duSave(); window.scrollTo(0,0);
+}
+async function duSave(){
+  const P = DU.play, g = frGrp(), a = lsGet('auth'), lab = duLabel(P.subj);
+  P.err = ''; P.saving = true; if(cur==='friends') duView();
+  try{
+    if(P.mine==='a'){
+      const {r, j} = await fsReq(frPath(g, 'duels'), 'POST', {fields:fsFields({a:a.uid, aName:g.me, b:P.opp.id, bName:frStr(P.opp.name, 30), subj:P.subj, seed:P.seed, fp:P.fp, n:P.qs.length, ra:JSON.stringify(P.res), rb:'', at:Date.now()})});
+      if(!r.ok) throw frErr(r);
+      FR.duels = (FR.duels || []).concat([fsDoc(j)]);
+      frSend([P.opp.id], g.me + ' fordert dich zum Quiz-Duell in ' + lab + ' heraus: ' + duFmt(P.res.s) + ' von ' + P.qs.length + ' Punkten. Schaffst du mehr?', '').catch(() => {});
+    } else {
+      const {r} = await fsReq(frPath(g, 'duels', P.did) + '?updateMask.fieldPaths=rb', 'PATCH', {fields:fsFields({rb:JSON.stringify(P.res)})});
+      if(!r.ok) throw frErr(r);
+      const dd = (FR.duels || []).find(x => x.id===P.did); if(dd) dd.rb = JSON.stringify(P.res);
+      const c = P.other ? duCmp(P.res, P.other) : 0;
+      frSend([P.opp.id], g.me + ' hat euer Duell in ' + lab + ' gespielt: ' + duFmt(P.other ? P.other.s : 0) + ' : ' + duFmt(P.res.s) + '. ' + (c===1 ? g.me + ' hat gewonnen.' : c===-1 ? 'Du hast gewonnen!' : 'Unentschieden.'), '').catch(() => {});
+    }
+    P.saved = true;
+  }catch(e){ P.err = e.message; }
+  P.saving = false;
+  if(DU.play===P && cur==='friends') duView();
+}
+function frDuelsHtml(){
+  const me = lsGet('auth').uid, others = (FR.members || []).filter(m => m.id!==me);
+  const valid = d => typeof d.a==='string' && typeof d.b==='string' && duOk(d.subj) && Number.isInteger(d.seed);
+  const mine = (FR.duels || []).filter(d => valid(d) && (d.a===me || d.b===me)).sort((p,q) => (q.at||0) - (p.at||0));
+  const nm = (uid, fb) => frName(uid) || frStr(fb, 30) || 'jemand';
+  const n = d => Math.max(1, Math.min(20, Number.isInteger(d.n) ? d.n : DUEL_N));
+  const turn = mine.filter(d => d.b===me && !d.rb), wait = mine.filter(d => d.a===me && !d.rb), done = mine.filter(d => d.rb).slice(0, 8);
+  const subOpts = duSubjects().map(x => '<option value="' + x.id + '">' + esc(x.label) + '</option>').join('');
+  let h = others.length
+    ? '<div class="gform"><label>Gegen<select id="duOpp">' + others.map(m => '<option value="' + esc(m.id) + '">' + esc(frStr(m.name, 30) || 'Ohne Namen') + '</option>').join('') + '</select></label><label>Fach<select id="duSubj">' + subOpts + '</select></label></div>'
+      + '<div class="row" style="margin-top:var(--s3)"><button class="btn" id="duGo">Herausfordern</button></div><p class="ghint">' + DUEL_N + ' Fragen, für beide dieselben. Es zählen die Punkte, bei Gleichstand gewinnt die schnellere Zeit.</p>'
+    : '<p class="muted">Sobald jemand in der Gruppe ist, kannst du ein Duell starten.</p>';
+  if(turn.length) h += '<h4>Du bist dran</h4>' + turn.map(d => '<div class="duitem"><span class="gt"><b>' + esc(nm(d.a, d.aName)) + '</b> fordert dich heraus<small>' + esc(duLabel(d.subj)) + ' · ' + n(d) + ' Fragen</small></span><button class="btn" data-duplay="' + esc(d.id) + '">Spielen</button></div>').join('');
+  if(wait.length) h += '<h4>Warten auf die anderen</h4>' + wait.map(d => { const ra = duRes(d.ra, n(d));
+    return '<div class="duitem"><span class="gt">' + esc(nm(d.b, d.bName)) + '<small>' + esc(duLabel(d.subj)) + (ra ? ' · du: ' + duFmt(ra.s) + ' von ' + n(d) : '') + '</small></span><span class="dutag wait">wartet</span></div>'; }).join('');
+  if(done.length) h += '<h4>Fertig</h4>' + done.map(d => {
+    const ra = duRes(d.ra, n(d)), rb = duRes(d.rb, n(d)); if(!ra || !rb) return '';
+    const iA = d.a===me, my = iA ? ra : rb, ot = iA ? rb : ra, c = duCmp(my, ot), other = iA ? nm(d.b, d.bName) : nm(d.a, d.aName);
+    return '<div class="duitem"><span class="gt">Du ' + duFmt(my.s) + ' : ' + duFmt(ot.s) + ' ' + esc(other) + '<small>' + esc(duLabel(d.subj)) + ' · ' + duTime(my.t) + ' gegen ' + duTime(ot.t) + '</small></span><span class="dutag ' + (c===1 ? 'win' : c===-1 ? 'lose' : 'tie') + '">' + (c===1 ? 'gewonnen' : c===-1 ? 'verloren' : 'unentschieden') + '</span></div>'; }).join('');
+  return h;
+}
+function duBind(){
+  const me = lsGet('auth').uid;
+  if($('#duGo')) $('#duGo').onclick = () => {
+    const opp = $('#duOpp').value, subj = $('#duSubj').value, m = (FR.members || []).find(x => x.id===opp);
+    if(!m || !duOk(subj)) return;
+    const b = new Uint32Array(1); crypto.getRandomValues(b);
+    duStart({opp:{id:m.id, name:frStr(m.name, 30) || 'Ohne Namen'}, subj, seed:b[0] >>> 1, fp:duelFp(subj), mine:'a', other:null});
+  };
+  document.querySelectorAll('[data-duplay]').forEach(btn => btn.onclick = () => {
+    const d = (FR.duels || []).find(x => x.id===btn.dataset.duplay); if(!d || d.b!==me || d.rb || !duOk(d.subj) || !Number.isInteger(d.seed)) return;
+    if(d.fp!==duelFp(d.subj)){ alert('Ihr habt verschiedene Versionen des Lerntools. Lade die App neu (oder schliess sie einmal) und versuch es nochmals. Hilft das nicht, muss ' + (frName(d.a) || 'die andere Person') + ' die App auch neu laden.'); return; }
+    const nn = Math.max(1, Math.min(20, Number.isInteger(d.n) ? d.n : DUEL_N));
+    duStart({did:d.id, opp:{id:d.a, name:frName(d.a) || frStr(d.aName, 30) || 'jemand'}, subj:d.subj, seed:d.seed, fp:d.fp, mine:'b', other:duRes(d.ra, nn)});
+  });
+}
+
 setTimeout(frPoll, 1500);
 setInterval(frPoll, 90000);
 document.addEventListener('visibilitychange', () => { if(document.visibilityState==='visible') frPoll(); });
