@@ -226,7 +226,8 @@ tr:last-child>td{border-bottom:none}
 .ex .meta,.ptq .meta{font:600 var(--t-xs)/1.4 var(--f-ui);letter-spacing:.02em;text-transform:uppercase;color:var(--c-text)}
 .q{display:grid;grid-template-columns:1fr auto;gap:var(--s2) var(--s3);align-items:center;padding:var(--s2) 0;border-bottom:1px solid var(--line)}
 .q:last-of-type{border-bottom:none}
-.q.stack{grid-template-columns:1fr}
+.q.stack{grid-template-columns:minmax(0,1fr)}
+.q select{min-width:0;max-width:100%}
 .qtext{margin:var(--s1) 0 0;font:700 var(--t-l)/1.35 var(--f-head);letter-spacing:-.015em}
 .opts{display:grid;gap:var(--s2);margin-top:var(--s3)}
 .opt{display:flex;gap:var(--s2);align-items:center;text-align:left;padding:12px var(--s3);background:var(--fill-soft);border:2px solid transparent;border-radius:12px;cursor:pointer;font:var(--t-m)/1.4 var(--f-read);color:var(--ink);transition:background-color .12s}
@@ -540,7 +541,7 @@ svg circle.cp,svg circle.cn{stroke:rgba(0,0,0,.28);stroke-width:.6}
   .card{padding:var(--s3)}
   .tab{padding:6px 10px}
   .countdown .big{font-size:48px}
-  .q{grid-template-columns:1fr}
+  .q{grid-template-columns:minmax(0,1fr)}
   .mdstep{grid-template-columns:minmax(0,1fr)}
   .mdth{flex:1 1 50px;padding:var(--s1) 2px}
   .mdth .mdico{width:36px;height:36px}
@@ -579,7 +580,7 @@ const ICON = {
 const iconSvg = id => `<svg viewBox="0 0 24 24" aria-hidden="true">${ICON[id]}</svg>`;
 const SUBJECTS = [
   {id:'bm', short:'BM', label:'Mathematik', name:'Mathematik Grundlagen', teacher:'NäJ', color:'#0A84FF', g1:'#5AC8FA', g2:'#0A84FF'},
-  {id:'bn', short:'BN', label:'Naturwissenschaften', name:'Naturwissenschaften', teacher:'', color:'#E5192E', g1:'#FF6B6B', g2:'#E5192E'},
+  {id:'bn', short:'BN', label:'Naturwissenschaften', name:'Naturwissenschaften', teacher:'Ch. Rupf', color:'#E5192E', g1:'#FF6B6B', g2:'#E5192E'},
   {id:'bw', short:'BW', label:'Wirtschaft und Recht', name:'Wirtschaft und Recht', teacher:'KoP', color:'#1E9E4A', g1:'#4CD964', g2:'#1E9E4A'},
   {id:'bz', short:'BZ', label:'Zweite Landessprache', name:'Zweite Landessprache', teacher:'', color:'#5856D6', g1:'#A29BFE', g2:'#5856D6'},
   {id:'bg', short:'BG', label:'Geschichte und Politik', name:'Geschichte und Politik', teacher:'ScY', color:'#F2700F', g1:'#FFB347', g2:'#F2700F'},
@@ -814,7 +815,7 @@ function quizPool(){
 const shuffle = arr => { const a=arr.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; };
 
 /* =====================================================================
-   MATHEMATIK: Zahlenmengen und Grundoperationen, S. 17–33 (ohne S. 31)
+   MATHEMATIK: Zahlenmengen und Grundoperationen, Aufgaben 17–30, 32 und 33
    ===================================================================== */
 const MATH_TEST = new Date(2026,10,16);
 
@@ -1008,7 +1009,7 @@ const MSETS = [
     ['f','(c^2+4cd+4d^2-4e^2)/(c^2-4ce+4e^2-4d^2)','(c+2d+2e)/(c-2d-2e)'],['g','(49y^2-4(y+2)^2)/(45y^2-16y-16)','1']]},
   {id:'kgv', topic:'kgV, Addieren & Subtrahieren', page:'28', title:'kgV: Beispiele', k:'any', intro:'Bestimme das kleinste gemeinsame Vielfache (kgV). Lösungen selbst berechnet.', items:[
     ['a',['6','8','13'],'312'],['b',['6r','3rs','12st'],'12rst'],['c',['a','a+b','a-b','a^2-b^2'],'a(a-b)(a+b)']]},
-  {id:'a31', topic:'kgV, Addieren & Subtrahieren', page:'28', title:'Aufgabe 31: kgV', k:'any', intro:'Bestimme das kgV der Terme (gern in Faktoren, z. B. «x(x+1)(x+2)»).', items:[
+  {id:'a31', extra:true, topic:'kgV, Addieren & Subtrahieren', page:'28', title:'Aufgabe 31: kgV', k:'any', intro:'Bestimme das kgV der Terme (gern in Faktoren, z. B. «x(x+1)(x+2)»).', items:[
     ['a',['3','7','9','21','28'],'252'],['b',['21a','12b','122a^2b','61b^3','3a^4b^2'],'5124a^4b^3'],['c',['x','x+1','x+2'],'x(x+1)(x+2)'],
     ['d',['x','(x+1)^2','(x+1)^4'],'x(x+1)^4'],['e',['x^2-3x+2','x^2+x-6'],'(x-2)(x-1)(x+3)'],['f',['4x^2-4y^2','(4x-4y)^2','x^2+xy-2y^2'],'16(x-y)^2(x+y)(x+2y)']]},
   {id:'add1', topic:'kgV, Addieren & Subtrahieren', page:'29–30', title:'Addieren & Subtrahieren: Beispiele', k:'frac', intro:'Schreib als einen gekürzten Bruchterm. Lösungen selbst berechnet (e = Beispiel aus 6.8).', items:[
@@ -1020,11 +1021,11 @@ const MSETS = [
   {id:'a33', topic:'kgV, Addieren & Subtrahieren', page:'30', title:'Aufgabe 33: Brüche addieren (aufwändig)', k:'frac', intro:'Schreib als einen gekürzten Bruchterm. Tipp: Vorgehen aus 6.8 (Nenner faktorisieren → Hauptnenner → erweitern → kürzen).', items:[
     ['a','m/(m-n)-n/(n-m)-(2mn)/(m^2-n^2)','(m^2+n^2)/(m^2-n^2)'],['b','(m+13)/(m^2+m-6)-(m+1)/(m^2-3m+2)','8/((m+3)(m-1))'],
     ['c','(x+5)/(x^2-2x-3)+(9x-7)/(x^2-x-6)-(4x+3)/(x^2+3x+2)','6/(x-3)'],['d','(a+b)/(a^2-ab)-(a-b)/(ab+b^2)+(a^2-3ab)/(a^2b-b^3)','b/(a(a-b))']]},
-  {id:'a35', topic:'Multiplizieren & Doppelbrüche', page:'32', title:'Aufgabe 35: Vereinfachen', k:'frac', intro:'Vereinfache so weit wie möglich. (Regeln zum Multiplizieren stehen auf S. 31, siehe Theorie.)', items:[
+  {id:'a35', extra:true, topic:'Multiplizieren & Doppelbrüche', page:'32', title:'Aufgabe 35: Vereinfachen', k:'frac', intro:'Vereinfache so weit wie möglich. (Regeln zum Multiplizieren stehen auf S. 31, siehe Theorie.)', items:[
     ['a','u/(u+1)*(1/u-u)-u/(1-u)*(1/u+u)','(2u)/(u-1)'],['b','(a-1)(a+1/(1-a))*(1+a-a^2/(a+1))','((2a+1)(a^2-a-1))/(a+1)'],
     ['c','1/(x-1)*(x^2-1)/(1-x^2)*((1-x)/(1+x))^2*(x^3-x^2-x+1)/(x^2-2x+1)','(1-x)/(1+x)'],
     ['d','(5a/b+3b/(2a))^2-(5a/b+3b/(2a))(5a/b-3b/(2a))','(30a^2+9b^2)/(2a^2)']]},
-  {id:'dbl', topic:'Multiplizieren & Doppelbrüche', page:'32–33', title:'Doppelbrüche', k:'frac', intro:'Vereinfache den Doppelbruch so weit wie möglich. Lösungen selbst berechnet bzw. aus dem Beispiel S. 33.', items:[
+  {id:'dbl', extra:true, topic:'Multiplizieren & Doppelbrüche', page:'32–33', title:'Doppelbrüche', k:'frac', intro:'Vereinfache den Doppelbruch so weit wie möglich. Lösungen selbst berechnet bzw. aus dem Beispiel S. 33.', items:[
     ['a','(1/3+1/4)/(3/8-5/6)','-14/11'],['b','(1+1/a)/3','(a+1)/(3a)'],['c','x/(3/y)','(xy)/3'],['d','(a+b)/(a/b-b/a)','(ab)/(a-b)']]}
 ];
 const MTOPICS = [...new Set(MSETS.map(s => s.topic))];
@@ -1041,10 +1042,10 @@ const MPLAN = [
   ['2026-11-08','Aufgaben 25 und 26 + Trainer «x² + bx + c»',['a25','a26']],
   ['2026-11-09','Aufgabe 27: alle Methoden gemischt',['a27']],
   ['2026-11-10','Kürzen & Erweitern + Aufgaben 28 und 29',['d1','a28','a29']],
-  ['2026-11-11','Aufgabe 30 + kgV (Aufgabe 31)',['a30','kgv','a31']],
+  ['2026-11-11','Aufgabe 30 + kgV als Grundlage für 32 und 33',['a30','kgv','a31']],
   ['2026-11-12','Addieren & Subtrahieren + Aufgabe 32',['add1','a32']],
-  ['2026-11-13','Aufgaben 33 und 35',['a33','a35']],
-  ['2026-11-14','Doppelbrüche + 1. Probetest',['dbl']],
+  ['2026-11-13','Aufgabe 33 + Aufgabe 17 wiederholen',['a33','a17']],
+  ['2026-11-14','1. Probetest, danach Fehler wiederholen',[]],
   ['2026-11-15','Fehler wiederholen, Karteikarten, 2. Probetest',[]],
   ['2026-11-16','Test! Ausgeschlafen kommen, ohne Taschenrechner',[]]
 ];
@@ -1054,7 +1055,7 @@ const daysLeft = () => { const t=new Date(); t.setHours(0,0,0,0); return Math.ro
 function setDone(id){ const s = store.get('mscores',{})[id], set = MSETS.find(x => x.id===id); return !!(s && s.ok.length===set.items.length); }
 
 const MATH = {
-  chapter:'Zahlenmengen und Grundoperationen · S. 17–33 (ohne S. 31)',
+  chapter:'Zahlenmengen und Grundoperationen · Aufgaben 17–30, 32 und 33',
   cards:[
     ['(a + b)²','a² + 2ab + b²'],['(a − b)²','a² − 2ab + b²'],['(a + b)(a − b)','a² − b²'],
     ['Warum ist (a + b)² ≠ a² + b²?','Es fehlen die zwei Rechtecke ab + ba = 2ab.'],
@@ -1114,10 +1115,10 @@ function mathTheory(){ return [
     <li><b>Hauptnenner</b> (kgV der Nenner) bestimmen, Brüche erweitern und auf einen Bruchstrich schreiben.</li>
     <li><b>Zähler ausmultiplizieren</b>, zusammenfassen, faktorisieren und kürzen.</li></ol>
     <p>Beispiel: ${M('(p^2-8p)/(2p^2+p-15)-p^2/(5p-2p^2)')} = ${M('(p(p-8))/((2p-5)(p+3))+p/(2p-5)')} = ${M('(p(p-8)+p(p+3))/((2p-5)(p+3))')} = ${M('(p(2p-5))/((2p-5)(p+3))')} = ${M('p/(p+3)')}</p>`},
-  {t:'Multiplizieren (S. 31: kein Teststoff, aber für Aufgabe 35 nötig)', h:`
+  {t:'Multiplizieren (S. 31: Zusatz, kein Prüfungsstoff)', h:`
     <ul><li>Zähler mal Zähler durch Nenner mal Nenner: ${M('a/b*c/d')} = ${M('(ac)/(bd)')}</li><li>Ein Faktor kann in den Zähler: ${M('a*b/c')} = ${M('(ab)/c')}</li>
     <li>Vor dem Ausmultiplizieren immer zuerst faktorisieren und kürzen!</li></ul>`},
-  {t:'6.11 Division und Doppelbrüche (S. 32–33)', h:`
+  {t:'6.11 Division und Doppelbrüche (S. 32–33: Zusatz, kein Prüfungsstoff)', h:`
     <div class="formelbox"><b>Regel:</b> Man dividiert durch einen Bruch, indem man mit dem <b>Kehrwert</b> multipliziert:<div>${M('(a/b)/(c/d)')} = ${M('a/b*d/c')}</div></div>
     <h4>Erweiterungsmethode</h4><p>Zähler und Nenner des Doppelbruchs mit dem <b>kgV aller Teilnenner</b> multiplizieren. Dann verschwinden alle kleinen Brüche.</p>
     <ul><li>${M('(1/3+1/4)/(3/8-5/6)')}: kgV von 3, 4, 8, 6 = 24 → ${M('(8+6)/(9-20)')} = ${M('-14/11')}</li>
@@ -1166,14 +1167,15 @@ function mRow(task, o={}){
 
 function viewMathOverview(v){
   const d = daysLeft(), plan = store.get('mplan',{}), tk = todayKey(), sc = store.get('mscores',{});
-  const topicRows = MTOPICS.map(t => { const sets = MSETS.filter(s => s.topic===t); let ok=0, n=0;
+  const topicRows = MTOPICS.filter(t => MSETS.some(x => x.topic===t && !x.extra)).map(t => { const sets = MSETS.filter(s => s.topic===t && !s.extra); let ok=0, n=0;
     sets.forEach(s => { n += s.items.length; ok += (sc[s.id]?.ok.length || 0); });
     return `<tr><td>${esc(t)}</td><td style="width:45%"><div class="progress"><i style="width:${Math.round(ok/n*100)}%"></i></div></td><td style="white-space:nowrap">${ok} / ${n}</td></tr>`; }).join('');
   const todayPlan = MPLAN.find(p => p[0]===tk);
   v.innerHTML = `
     <div class="card countdown"><div class="big">${d>0 ? d : d===0 ? '0' : '–'}</div>
       <div><h3 style="margin:0">${d>0 ? `Tag${d===1?'':'e'} bis zum Mathe-Test` : d===0 ? 'Heute ist der Mathe-Test. Viel Erfolg!' : 'Der Test ist vorbei'}</h3>
-      <p class="muted" style="margin:var(--s1) 0 0">Montag, 16. November 2026 · Stoff: Skript «Zahlenmengen und Grundoperationen», S. 17–33 (ohne S. 31) · ohne Taschenrechner</p>
+      <p class="muted" style="margin:var(--s1) 0 0">Montag, 16. November 2026 · Stoff: Skript «Zahlenmengen und Grundoperationen», Aufgaben 17–30, 32 und 33 · ohne Taschenrechner</p>
+      <p class="muted" style="margin:var(--s1) 0 0">Aufgabe 17a–e kam schon an der Prüfung vom 7. September.</p>
       ${todayPlan ? `<p style="margin:var(--s2) 0 0"><b>Heute:</b> ${esc(todayPlan[1])}</p>` : ''}</div></div>
     <div class="card"><h3>Fortschritt nach Thema</h3><table>${topicRows}</table>
       <div class="row" style="margin-top:var(--s3)"><button class="btn" id="goEx">Zu den Übungen</button><button class="btn ghost" id="goTest">Probetest machen</button><button class="btn ghost" id="goTh">Theorie</button></div></div>
@@ -1205,10 +1207,10 @@ function viewMathEx(v){
       <div class="row"><button class="btn" id="mTrain">Trainieren</button></div></div>
     <div class="card help" style="font-size:var(--t-s);font-family:var(--f-ui)"><b>Tipp-Hilfe:</b> <code>x^2</code> für x², <code>(x+1)/(x-2)</code> für Brüche, <code>2ab</code> oder <code>(x+1)(x-1)</code> für Mal.
       Unter dem Feld siehst du, wie deine Eingabe gelesen wird.</div>
-    ${MTOPICS.map(t => `<div class="sectiontitle">${esc(t)}</div><div class="exgrid">${MSETS.map((s,n) => { if(s.topic!==t) return '';
+    ${MTOPICS.map(t => `<div class="sectiontitle">${esc(t)}${MSETS.every(x => x.topic!==t || x.extra) ? ' · Zusatz' : ''}</div><div class="exgrid">${MSETS.map((s,n) => { if(s.topic!==t) return '';
       const r = sc[s.id], ok = r ? r.ok.length : 0, all = s.items.length, done = ok===all;
       return `<button class="extile ${done?'done':''}" data-open="${s.id}"><span class="num">${n+1}</span><span class="t">${esc(s.title)}</span>
-        <span class="st">S. ${s.page} · ${all} Teilaufgaben · ${ok?`${ok} / ${all} richtig`:'noch offen'}</span><span class="progress"><i style="width:${Math.round(ok/all*100)}%"></i></span></button>`; }).join('')}</div>`).join('')}`;
+        <span class="st">S. ${s.page} · ${all} Teilaufgaben · ${ok?`${ok} / ${all} richtig`:'noch offen'}${s.extra ? ' · Zusatz, kein Prüfungsstoff' : ''}</span><span class="progress"><i style="width:${Math.round(ok/all*100)}%"></i></span></button>`; }).join('')}</div>`).join('')}`;
   v.querySelectorAll('[data-open]').forEach(b => b.onclick = () => openEx(b.dataset.open));
   $('#mTest').onclick = () => { tab='test'; store.set('tab',tab); exOpen=null; render(); };
   $('#mTrain').onclick = () => openEx('mtrainer');
@@ -1295,7 +1297,7 @@ function viewMathTrainer(v){
 /* Probetest: 2 × Ausmultiplizieren, 3 × Faktorisieren, 3 × Bruchterme */
 let mtest = null;
 function buildMTest(){
-  const pools = [[['a17','a18','a19'],2], [['a21','a22','a23','a24','a25','a26','a27'],3], [['a29','a30','a32','a33','a35','dbl'],3]];
+  const pools = [[['a17','a18','a19'],2], [['a20','a21','a22','a23','a24','a25','a26','a27'],3], [['a28','a29','a30','a32','a33'],3]];
   const items = [];
   pools.forEach(([ids,cnt]) => { const all = ids.flatMap(id => { const s = MSETS.find(x => x.id===id); return s.items.map(it => ({s, it})); });
     shuffle(all).slice(0,cnt).forEach(x => items.push(x)); });
@@ -1722,11 +1724,11 @@ function bankBW(){
 }
 function bankBM(){
   const B = [];
-  MSETS.forEach(s => s.items.forEach(it => B.push({topic:s.topic, key:s.id+it[0], make:() => ({kind:'expr', task:{q:it[1], sol:it[2], k:it[3]||s.k}, src:`${s.title.split(':')[0]} ${it[0]})`})})));
+  MSETS.filter(s => !s.extra).forEach(s => s.items.forEach(it => B.push({topic:s.topic, key:s.id+it[0], make:() => ({kind:'expr', task:{q:it[1], sol:it[2], k:it[3]||s.k}, src:`${s.title.split(':')[0]} ${it[0]})`})})));
   const gt = {binom:'Binomische Formeln', common:'Faktorzerlegung', squares:'Faktorzerlegung', quad:'Faktorzerlegung', kuerzen:'Kürzen & Erweitern', vorzeichen:'Kürzen & Erweitern', addieren:'kgV, Addieren & Subtrahieren'};
   Object.entries(gt).forEach(([g,t]) => { for(let i=0; i<4; i++) B.push({topic:t, key:'g'+g+i, make:() => ({kind:'expr', task:GEN[g](), src:'Zufallsaufgabe'})}); });
   addCardQs(B, MATH.cards, 'Regeln & Formeln');
-  return {topics:[...MTOPICS, 'Regeln & Formeln'], bank:B};
+  return {topics:[...MTOPICS.filter(t => MSETS.some(x => x.topic===t && !x.extra)), 'Regeln & Formeln'], bank:B};
 }
 function bankM162(){
   const T = {k:'Kardinalitäten', s:'Schlüssel & Beziehungen', n:'Normalformen', a:'Anomalien & Modelle', b:'Begriffe & Tools'};
@@ -2719,13 +2721,15 @@ function bankBN(){
   addCardQs(B, BN.cards, CH_T.b);
   return {topics:Object.values(CH_T), bank:B};
 }
-function examDays(s){ const k = s.id==='m162' ? 'm162.date' : s.id==='bn' ? 'bn.date' : null; if(s.id==='bm') return daysLeft(); const d = k && store.get(k,''); if(!d) return null; const t = new Date(); t.setHours(0,0,0,0); return Math.round((pDate(d)-t)/86400000); }
+function examDays(s){ const k = s.id==='m162' ? 'm162.date' : s.id==='bn' ? 'bn.date' : null; if(s.id==='bm') return daysLeft(); const d = k && store.get(k, k==='bn.date' ? BN_EXAM : ''); if(!d) return null; const t = new Date(); t.setHours(0,0,0,0); return Math.round((pDate(d)-t)/86400000); }
 const goLab = sec => { LAB.sec = sec; tab = 'lab'; store.set('tab',tab); exOpen = null; render(); window.scrollTo(0,0); };
+const BN_EXAM = '2026-11-09';   // laut Teams, kann im Feld geändert werden
 function viewBNOverview(v){
-  const g = store.get('bn.goals',{}), date = store.get('bn.date',''), n = BN.goals.filter((_,i) => g[i]).length, d = examDays({id:'bn'});
+  const g = store.get('bn.goals',{}), date = store.get('bn.date',BN_EXAM), n = BN.goals.filter((_,i) => g[i]).length, d = examDays({id:'bn'});
   const big = d===null ? '' : d>0 ? `<div class="big">${d}</div><div><h3 style="margin:0">Tag${d===1?'':'e'} bis zur Chemie-Prüfung</h3><p class="muted" style="margin:var(--s1) 0 0">${pDate(date).toLocaleDateString('de-CH',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}</p></div>` : d===0 ? '<div class="big">0</div><h3>Heute ist die Chemie-Prüfung. Viel Erfolg!</h3>' : '<div class="big">–</div><h3>Die Prüfung ist vorbei</h3>';
   v.innerHTML = `<div class="card countdown">${big || '<div><h3 style="margin:0">Wann ist die Chemie-Prüfung?</h3><p class="muted" style="margin:var(--s1) 0 0">Trag das Datum ein, dann siehst du hier einen Countdown.</p></div>'}
-      <div class="row" style="margin-left:auto"><label class="muted" for="bndate">Prüfungsdatum</label><input type="date" id="bndate" value="${date}"></div></div>
+      <div class="row" style="margin-left:auto"><label class="muted" for="bndate">Prüfungsdatum</label><input type="date" id="bndate" value="${date}"></div>
+      ${date===BN_EXAM ? '<p class="muted" style="flex-basis:100%;margin:0">Mitbringen: nicht grafikfähiger Taschenrechner. Einen Stoffumfang hat die Lehrperson im Team nicht angegeben.</p>' : ''}</div>
     <div class="card"><h3>Interaktives Labor</h3><p class="muted">Bau Atome, schiess auf Goldfolie, lass Kerne zerfallen und starte eine Kettenreaktion.</p>
       <div class="exgrid">${LAB_SECS.map(s => `<button class="extile" data-lab="${s[0]}"><span class="t">${esc(s[1])}</span><span class="st">${esc(s[2])}</span></button>`).join('')}</div></div>
     <div class="card"><h3>Lernziele: Was kann ich schon?</h3><p class="muted">${n} von ${BN.goals.length} abgehakt. Hake nur ab, was du wirklich erklären kannst.</p>
@@ -3401,14 +3405,23 @@ function render(){
 /* ---------- Noten und Durchschnitt ---------- */
 const G_ICON = '<rect x="5" y="3" width="14" height="18" rx="2.5"/><path d="M9 8h6M9 12h6M9 16h3.5"/>';
 const G_TILE = {g1:'#818CF8', g2:'#4F46E5'};
-const G_BM = ['bm','bn','bw','bz','bg'];   // zählen zum Gesamtschnitt der Berufsmaturität
+const G_BM = ['bm','bn','bw','bz','bg'];
+// Prüfungen laut Teams-Übersicht vom 9.11.2026
+const G_EXAMS = [
+  {s:'bm', d:'2026-09-07', t:'Prüfung Mathematik', info:''},
+  {s:'bg', d:'2026-09-28', t:'Prüfung Dossier Aufklärung', info:''},
+  {s:'bw', d:'2026-11-02', t:'Prüfung Kapitel 1', info:'online'},
+  {s:'bn', d:'2026-11-09', t:'Prüfung Chemie', info:'nicht grafikfähiger Taschenrechner'},
+  {s:'bm', d:'2026-11-16', t:'Test Zahlenmengen und Grundoperationen', info:'Aufgaben 17–30, 32 und 33, ohne Taschenrechner'}
+];
+const G_NODATE = [['bw','Wirtschaft und Recht: Kapitel 2 «Unternehmensmodell und Strategie»: Dossier im Team, Termin noch offen'], ['bz','Französisch: noch keine Infos im Team'], ['bg','Geschichte und Politik: kein neuer Termin']];   // zählen zum Gesamtschnitt der Berufsmaturität
 const G_SVG = {
   edit:'<path d="M4 20h4L19 9l-4-4L4 16v4zM13.5 6.5l4 4"/>',
   del:'<path d="M5 7h14M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/>',
   chev:'<path d="M9 6l6 6-6 6"/>'
 };
 const gSvg = (k, cls) => '<svg viewBox="0 0 24 24" aria-hidden="true"' + (cls ? ' class="' + cls + '"' : '') + '>' + G_SVG[k] + '</svg>';
-let gOpen = new Set(), gEdit = null, gFlash = '', gForm = {s:'bm', d:''}, gCalc = {mode:'need', s:'bm', target:'4', w:'1', g:'4.5'};
+let gOpen = new Set(), gEdit = null, gFlash = '', gForm = {s:'bm', d:'', t:''}, gCalc = {mode:'need', s:'bm', target:'4', w:'1', g:'4.5'};
 const gObj = o => o && typeof o==='object' && !Array.isArray(o) ? o : {};
 function gData(){
   const d = gObj(store.get('grades', null));
@@ -3487,6 +3500,20 @@ function gCalcRun(){
   const n = Math.ceil(need*100 - 1e-6)/100;
   out('Mindestens ' + n.toFixed(2), 'So viel brauchst du für ' + goal + '. ' + before);
 }
+function gExamCard(d, subs){
+  const today = gToday(), lab = id => (subs.find(x => x.id===id) || {label:id}).label;
+  const has = x => Object.values(d.items).find(it => it && it.s===x.s && it.d===x.d);
+  const row = (x, i) => { const done = has(x), days = Math.round((pDate(x.d) - pDate(today))/86400000);
+    const when = days>0 ? 'in ' + days + ' Tag' + (days===1 ? '' : 'en') : days===0 ? 'heute' : '';
+    return '<div class="gitem"><span class="gt">' + esc(lab(x.s)) + ': ' + esc(x.t) + '<small>' + [gDate(x.d), when, x.info].filter(Boolean).map(esc).join(' · ') + '</small></span>'
+      + (done ? '<span class="gv' + (done.g<4 ? ' gbad' : '') + '">' + gShow(done.g) + '</span>' : days<=0 ? '<button class="chip" data-gexam="' + i + '">Note eintragen</button>' : '') + '</div>'; };
+  const up = G_EXAMS.map((x,i) => [x,i]).filter(([x]) => x.d>=today), past = G_EXAMS.map((x,i) => [x,i]).filter(([x]) => x.d<today).reverse();
+  return '<div class="card"><h3>Prüfungen</h3>'
+    + (up.length ? '<h4>Kommend</h4>' + up.map(([x,i]) => row(x,i)).join('') : '')
+    + (past.length ? '<h4>Vorbei</h4>' + past.map(([x,i]) => row(x,i)).join('') : '')
+    + '<h4>Noch ohne Termin</h4>' + G_NODATE.map(([sid,t]) => '<div class="gitem"><span class="gt">' + esc(t) + '</span></div>').join('')
+    + '<p class="ghint">Stand der Teams-Übersicht: 9. November 2026.</p></div>';
+}
 function viewGrades(){
   const d = gData(), subs = gSubjects(d), ids = subs.map(x => x.id);
   if(gEdit && !d.items[gEdit]) gEdit = null;
@@ -3494,7 +3521,7 @@ function viewGrades(){
   if(!ids.includes(gCalc.s)) gCalc.s = subs[0].id;
   if(!gForm.d) gForm.d = gToday();
   const e = gEdit ? d.items[gEdit] : null;
-  const fv = e ? {s:ids.includes(e.s) ? e.s : gForm.s, t:e.t || '', g:gShow(e.g), w:String(e.w), d:e.d || ''} : {s:gForm.s, t:'', g:'', w:'1', d:gForm.d};
+  const fv = e ? {s:ids.includes(e.s) ? e.s : gForm.s, t:e.t || '', g:gShow(e.g), w:String(e.w), d:e.d || ''} : {s:gForm.s, t:gForm.t || '', g:'', w:'1', d:gForm.d};
   const bm = gGroup(d,'bm'), ot = gGroup(d,'other');
   const head = bm.total!==null ? [bm.total, 'Schnitt BM-Fächer'] : ot.total!==null ? [ot.total, 'Schnitt weitere Fächer'] : null;
   const used = Object.values(d.items).reduce((m,x) => Math.max(m, x && Number.isInteger(x.sem) ? x.sem : 1), 0);
@@ -3544,6 +3571,7 @@ function viewGrades(){
     + (need ? '<label class="gl-n">Ziel im Zeugnis<input type="text" id="gcT" inputmode="decimal" autocomplete="off" value="' + esc(gCalc.target) + '"></label>' : '<label class="gl-n">Note der Prüfung<input type="text" id="gcG" inputmode="decimal" autocomplete="off" value="' + esc(gCalc.g) + '"></label>')
     + '<label class="gl-n">Gewicht der Prüfung<input type="text" id="gcW" inputmode="decimal" autocomplete="off" value="' + esc(gCalc.w) + '"></label></div>'
     + '<div class="gres" id="gcRes" role="status"></div></div>'
+    + gExamCard(d, subs)
     + '<div class="card"><h3>Einstellungen</h3><h4>Zeugnisnote runden auf</h4><div class="row">'
     + [[0.5,'Halbe Noten'],[0.1,'Zehntel'],[0,'Nicht runden']].map(o => '<button class="chip' + (d.round===o[0] ? ' on' : '') + '" data-gr="' + o[0] + '">' + o[1] + '</button>').join('') + '</div>'
     + '<h4>Eigenes Fach hinzufügen</h4><div class="gx"><label class="gl-t">Name<input type="text" id="gxN" maxlength="40" placeholder="z. B. Englisch"></label>'
@@ -3575,12 +3603,13 @@ function viewGrades(){
     const x = gData(); if(!gSubjects(x).some(y => y.id===sid)) return msg('Wähle ein Fach.');
     const old = gEdit ? x.items[gEdit] : null, id = old ? gEdit : gId();
     x.items[id] = {s:sid, t, g:Math.round(g*100)/100, w:Math.round(w*1000)/1000, d:/^\d{4}-\d{2}-\d{2}$/.test(dt) ? dt : '', sem:old && Number.isInteger(old.sem) ? old.sem : x.sem, at:old && old.at ? old.at : Date.now()};
-    gSave(x); gForm = {s:sid, d:old ? gForm.d : (dt || gForm.d)}; gEdit = null; gOpen.add(sid);
+    gSave(x); gForm = {s:sid, d:old ? gForm.d : (dt || gForm.d), t:''}; gEdit = null; gOpen.add(sid);
     gFlash = old ? 'Note geändert.' : 'Note ' + gShow(x.items[id].g) + ' eingetragen.'; redraw(); $('#gG').focus({preventScroll:true});
   };
   $('#gAdd').onclick = save;
   ['#gT','#gG','#gW','#gD'].forEach(q => $(q).addEventListener('keydown', ev => { if(ev.key==='Enter'){ ev.preventDefault(); save(); } }));
   if($('#gCancel')) $('#gCancel').onclick = () => { gEdit = null; redraw(); };
+  m.querySelectorAll('[data-gexam]').forEach(b => b.onclick = () => { const x = G_EXAMS[Number(b.dataset.gexam)]; gForm = {s:x.s, d:x.d, t:x.t}; gEdit = null; redraw(); toForm(); });
   m.querySelectorAll('[data-gm]').forEach(b => b.onclick = () => { gCalc.mode = b.dataset.gm; redraw(); });
   m.querySelectorAll('[data-gr]').forEach(b => b.onclick = () => { const x = gData(); x.round = Number(b.dataset.gr); gSave(x); redraw(); });
   $('#gcS').onchange = ev => { gCalc.s = ev.target.value; gCalcRun(); };
@@ -3611,6 +3640,7 @@ function viewOverview(v, s){
     v.innerHTML = `
       <div class="card"><h3>Fortschritt</h3><p class="muted">${done} von ${EXERCISES.length} Übungen erledigt</p>
         <div class="progress"><i style="width:${Math.round(done/EXERCISES.length*100)}%"></i></div></div>
+      <div class="card"><h3>Als Nächstes: Kapitel 2</h3><p class="muted">Das Dossier «Unternehmensmodell und Strategie» liegt seit dem 26. Oktober im Team. Ein Prüfungstermin ist noch nicht bekannt. Die Prüfung zu Kapitel 1 war am 2. November (online).</p></div>
       <div class="card"><h3>Lernziele ${esc(BW.chapter)}</h3><ol>${BW.goals.map(g => `<li>${esc(g)}</li>`).join('')}</ol></div>
       <div class="card"><h3>So lernst du am besten</h3><ol>
         <li><b>Theorie</b> lesen (Zusammenfassung des Kapitels).</li>
