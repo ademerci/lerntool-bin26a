@@ -457,6 +457,38 @@ svg circle.cp,svg circle.cn{stroke:rgba(0,0,0,.28);stroke-width:.6}
   .hmeta{width:100%}
   .hchip{margin-left:auto}
 }
+/* ---------- Freunde ---------- */
+.stile{position:relative}
+.fbadge{position:absolute;top:-6px;right:-6px;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--bad);color:#fff;font:700 11px/18px var(--f-ui);text-align:center;box-shadow:0 0 0 2px var(--side)}
+.frcode{font:700 var(--t-l)/1.2 var(--f-head);letter-spacing:.06em}
+.frmem+.frmem{border-top:1px solid var(--line)}
+.frmem{padding:var(--s3) 0}
+.frmem:first-child{padding-top:0}
+.frhead{display:flex;align-items:center;gap:var(--s2);font:600 var(--t-s)/1.3 var(--f-ui)}
+.frhead .nm{flex:1;min-width:0;overflow-wrap:break-word}
+.frhead .nm small{display:block;font-weight:400;font-size:var(--t-xs);color:var(--ink-2)}
+.frhead .nm em{font-style:normal;font-weight:400;color:var(--ink-2)}
+.frbars{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:var(--s2) var(--s3);margin-top:var(--s2)}
+.frbar{font:var(--t-xs)/1.4 var(--f-ui);color:var(--ink-2)}
+.frbar>span{display:flex;justify-content:space-between;gap:var(--s1)}
+.frbar b{flex:none;color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+.frbar em{min-width:0;font-style:normal;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.frbar i{display:block;height:4px;margin-top:3px;border-radius:2px;background:var(--fill);overflow:hidden}
+.frbar i u{display:block;height:100%;border-radius:2px;background:linear-gradient(90deg,var(--a),var(--b))}
+.frsend{margin-top:var(--s3);padding:var(--s3);border-radius:var(--r-ctl);background:var(--sunken)}
+.frtask{display:flex;align-items:center;gap:var(--s2);padding:var(--s2) 0;border-top:1px solid var(--line)}
+.frtask .gt{flex:1;min-width:0;font:500 var(--t-s)/1.35 var(--f-ui);overflow-wrap:anywhere}
+.frtask .gt small{display:block;font-size:var(--t-xs);font-weight:400;color:var(--ink-2)}
+.frtask input[type=checkbox]{width:20px;height:20px;flex:none;margin:0;accent-color:var(--accent-fill)}
+.frtask.done .gt{color:var(--ink-2);text-decoration:line-through}
+.frinbox{border-left:4px solid var(--accent-fill)}
+@media (max-width:760px){
+  .themebtn{display:none}
+  .frtask{flex-wrap:wrap}
+  .frtask .gt{flex-basis:calc(100% - 40px)}
+  .frtask .chip{margin-left:28px}
+}
+
 /* ---------- Noten ---------- */
 .gsep{flex:none;height:1px;margin:var(--s2);background:var(--line)}
 .subj.active.gnav .stile{box-shadow:0 0 0 1.5px rgba(255,255,255,.7)}
@@ -514,7 +546,7 @@ svg circle.cp,svg circle.cn{stroke:rgba(0,0,0,.28);stroke-width:.6}
 .gres{margin-top:var(--s3);padding:var(--s3);border-radius:var(--r-ctl);background:var(--sunken);font:var(--t-s)/1.5 var(--f-ui)}
 .gres b.gr{display:block;margin-bottom:2px;font:700 var(--t-xl)/1.15 var(--f-head);letter-spacing:-.02em}
 @media (max-width:760px){
-  .gsep{width:1px;height:28px;margin:0 2px}
+  .gsep{display:none}
   .gsub>summary{gap:var(--s2);padding:12px var(--s2)}
   .gchev{display:none}
   .gbody{padding:0 var(--s2) var(--s3)}
@@ -3373,13 +3405,14 @@ function renderSide(){
     return `<button class="subj ${s.id===cur?'active':''}" data-s="${s.id}" title="${esc(s.name)}" style="--a:${s.g1};--b:${s.g2}">
       <span class="stile">${iconSvg(s.id)}</span>
       <span class="txt"><span class="nm">${esc(s.label)}</span><span class="pr">${st.info}</span>${BANKS[s.id] ? `<span class="smini"><i style="width:${st.pct}%"></i></span>` : ''}</span></button>`;
-  }).join('') + gNavHtml();
+  }).join('') + gNavHtml() + frNavHtml();
   document.querySelectorAll('.subj').forEach(b => b.onclick = () => { cur=b.dataset.s; store.set('subject',cur); tab='overview'; exOpen=null; render(); });
 }
 
 let renderKey = '';
 function render(){
   labStop();
+  if(cur==='friends'){ renderSide(); const rs = document.documentElement.style; rs.setProperty('--c', FR_TILE.g2); rs.setProperty('--g1', FR_TILE.g1); rs.setProperty('--g2', FR_TILE.g2); renderKey = 'friends'; return viewFriends(); }
   if(cur==='grades'){ renderSide(); const rs = document.documentElement.style; rs.setProperty('--c', G_TILE.g2); rs.setProperty('--g1', G_TILE.g1); rs.setProperty('--g2', G_TILE.g2); renderKey = 'grades'; return viewGrades(); }
   if(!SUBJECTS.some(x => x.id===cur)) cur = 'bw';
   if(tab==='lab' && cur!=='bn') tab = 'overview';
@@ -4108,6 +4141,7 @@ function openSync(){
   $('#syncUse').onclick = () => { const t = $('#syncCode').value; if(!t.trim()){ msg('Füge zuerst einen Code ein.', false); return; } load(t); };
   if($('#syncUndo')) $('#syncUndo').onclick = () => { if(confirm('Den gesicherten Stand wiederherstellen? Dein jetziger Stand wird dafür ebenfalls gesichert.')) syncApply(bk); };
   accountBind();
+  const tb = document.createElement('div'); tb.className = 'row'; tb.style.marginTop = 'var(--s3)'; tb.innerHTML = '<button class="chip" type="button" id="dlgTheme">Hell / Dunkel</button>'; dlg.appendChild(tb); $('#dlgTheme').onclick = () => $('#themeBtn').click();
   if(!dlg.open) dlg.showModal();
 }
 
@@ -4115,7 +4149,7 @@ function openSync(){
 // Diese zwei Werte sind laut Firebase öffentlich. Geschützt wird über die Firestore-Regeln: jedes Konto liest und schreibt nur sein eigenes Dokument.
 const FB = {apiKey:'AIzaSyBESKEyaqqZaoMrg2JExB9iLIFT2leBPU8', projectId:'lerntool-bin26a'};
 const fbOn = () => !!(FB.apiKey && FB.projectId);
-const CLOUD_LOCAL = ['theme', 'subject', 'tab', 'auth'];   // gilt nur für dieses Gerät
+const CLOUD_LOCAL = ['theme', 'subject', 'tab', 'auth', 'grpseen', 'grppub', 'grplast'];   // gilt nur für dieses Gerät
 const cloudKey = k => !CLOUD_LOCAL.includes(k) && !k.startsWith('sync.');
 const CL = {status:'off', msg:'', last:0, busy:false, again:false, timer:null, pending:null};
 const lsGet = k => { try{ return JSON.parse(localStorage.getItem('lt.'+k) || 'null'); }catch(e){ return null; } };
@@ -4314,6 +4348,263 @@ window.addEventListener('online', () => cloudSoon(300));
 window.addEventListener('offline', () => { if(fbOn() && lsGet('auth')) cloudState('offline'); });
 setInterval(() => { if(document.visibilityState==='visible' && !CL.timer) cloudSoon(0); }, 120000);
 $('#syncBtn').onclick = openSync;
+
+/* ---------- Freunde: Klassengruppe, Fortschritt, Hausaufgaben, Erinnerungen ---------- */
+// Firestore: groups/{CODE} (Name), groups/{CODE}/members/{uid} (Name, Fortschritt), .../members/{uid}/inbox (Erinnerungen), groups/{CODE}/tasks (Hausaufgaben).
+// Wer den Code kennt, kann beitreten. Lesen dürfen nur Mitglieder, eigene Einträge ändert nur der Besitzer (siehe Firestore-Regeln).
+const FR_ICON = '<circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.6"/><path d="M15.5 14.2c3 .2 5.5 2.6 5.5 5.8"/>';
+const FR_TILE = {g1:'#5EEAD4', g2:'#0D9488'};
+const FR = {min7:'', members:null, tasks:null, inbox:[], err:'', busy:false, t:0, to:null, draft:'', pubT:null};
+const FR_ABC = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+const frGrp = () => { const g = store.get('grp', null); return g && typeof g.id==='string' && /^[A-Z2-9]{8}$/.test(g.id) && typeof g.me==='string' ? g : null; };
+const frOn = () => fbOn() && !!lsGet('auth');
+const frCode = () => { const b = new Uint8Array(8); crypto.getRandomValues(b); return Array.from(b, x => FR_ABC[x % 32]).join(''); };
+const frFmt = c => c.slice(0,4) + '-' + c.slice(4);
+const frNorm = c => String(c).toUpperCase().replace(/[^A-Z0-9]/g, '');
+const fsVal = v => typeof v==='string' ? {stringValue:v} : typeof v==='number' ? (Number.isInteger(v) ? {integerValue:String(v)} : {doubleValue:v}) : typeof v==='boolean' ? {booleanValue:v} : v===null || v===undefined ? {nullValue:null} : Array.isArray(v) ? {arrayValue:{values:v.map(fsVal)}} : {mapValue:{fields:fsFields(v)}};
+const fsFields = o => Object.fromEntries(Object.entries(o).map(([k,v]) => [k, fsVal(v)]));
+const fsPlain = x => !x || typeof x!=='object' ? null : 'stringValue' in x ? x.stringValue : 'integerValue' in x ? Number(x.integerValue) : 'doubleValue' in x ? x.doubleValue : 'booleanValue' in x ? x.booleanValue : 'mapValue' in x ? fsObj(x.mapValue.fields) : 'arrayValue' in x ? (x.arrayValue.values || []).map(fsPlain) : null;
+const fsObj = fl => Object.fromEntries(Object.entries(fl || {}).map(([k,v]) => [k, fsPlain(v)]));
+const fsDoc = d => ({...fsObj(d.fields), id:String(d.name || '').split('/').pop()});
+const fsBase = () => 'https://firestore.googleapis.com/v1/projects/' + encodeURIComponent(FB.projectId) + '/databases/(default)/documents/';
+async function fsReq(path, method, body){
+  const a = await fbToken(); if(!a) throw new Error('Bitte melde dich zuerst an.');
+  const h = {Authorization:'Bearer ' + a.id}; if(body) h['Content-Type'] = 'application/json';
+  const {r, j} = await fbFetch(fsBase() + path, {method:method || 'GET', headers:h, body:body ? JSON.stringify(body) : undefined});
+  return {r, j, a};
+}
+const frErr = r => new Error(r.status===403 ? 'Kein Zugriff. Sind die Firestore-Regeln für Gruppen schon eingetragen?' : r.status===404 ? 'Nicht gefunden.' : 'Das hat nicht geklappt (Fehler ' + r.status + ').');
+async function fsList(path){ const {r, j} = await fsReq(path + '?pageSize=300'); if(r.status===404) return []; if(!r.ok) throw frErr(r); return (j.documents || []).map(fsDoc); }
+const frPath = (g, ...p) => 'groups/' + g.id + p.map(x => '/' + encodeURIComponent(x)).join('');
+const frStr = (v, n) => typeof v==='string' ? v.slice(0, n) : '';
+const frPct = v => typeof v==='number' && isFinite(v) ? Math.max(0, Math.min(100, Math.round(v))) : null;
+
+function frProgress(){ const p = {}; SUBJECTS.forEach(x => { if(BANKS[x.id]) p[x.id] = mastery(x.id).pct; }); return p; }
+// Eigenen Eintrag in der Gruppe schreiben (nur wenn sich etwas geändert hat)
+async function frPublish(force, gg){
+  const g = gg || frGrp(); if(!g || !frOn()) return;
+  const a = lsGet('auth'), srv = FR.members && FR.members.find(m => m.id===a.uid);
+  const doc = {name:g.me, p:frProgress(), last:Math.max(lsGet('grplast') || 0, srv && typeof srv.last==='number' ? srv.last : 0)};
+  const key = g.id + JSON.stringify(doc);
+  if(!force && lsGet('grppub')===key) return;
+  const {r} = await fsReq(frPath(g, 'members', a.uid), 'PATCH', {fields:fsFields({...doc, at:Date.now()})});
+  if(!r.ok) throw frErr(r);
+  lsSet('grppub', key);
+  if(FR.members){ FR.members = FR.members.filter(m => m.id!==a.uid).concat([{...doc, id:a.uid}]); }
+}
+const frPubSoon = () => { clearTimeout(FR.pubT); FR.pubT = setTimeout(() => { frPublish().catch(() => {}); }, 15000); };
+// Lernen merken: jede Änderung an Lernständen zählt als «zuletzt aktiv»
+const storeSetCloud = store.set;
+store.set = (k, v) => { storeSetCloud(k, v); if(!/^(grades|grp|subject|tab|theme|notes|sync|auth)/.test(k)){ lsSet('grplast', Date.now()); if(frGrp() && frOn()) frPubSoon(); } };
+
+const frName = uid => { const m = FR.members && FR.members.find(x => x.id===uid); return m ? frStr(m.name, 30) : ''; };
+function frNotify(fresh){
+  const m = fresh[0], who = frName(m.from) || frStr(m.fromName, 30) || 'Jemand', txt = frStr(m.text, 300);
+  if(typeof Notification!=='undefined' && Notification.permission==='granted'){
+    const title = 'Erinnerung von ' + who + (fresh.length>1 ? ' und ' + (fresh.length-1) + ' weitere' : '');
+    const show = () => { try{ new Notification(title, {body:txt, icon:'icon-192.png', tag:'lt-rem'}); }catch(e){} };
+    if(navigator.serviceWorker && /^https?:$/.test(location.protocol)) navigator.serviceWorker.getRegistration().then(r => r ? r.showNotification(title, {body:txt, icon:'icon-192.png', tag:'lt-rem'}) : show()).catch(show); else show();
+  }
+  if(cur==='friends') return;
+  let t = $('#frtoast'); if(!t){ t = document.createElement('div'); t.id = 'frtoast'; t.className = 'toast'; t.setAttribute('role', 'status'); document.body.appendChild(t); }
+  t.innerHTML = '<span></span><button class="btn ghost">Ansehen</button>';
+  t.querySelector('span').textContent = who + ': ' + txt;
+  t.querySelector('button').onclick = () => { t.remove(); cur = 'friends'; store.set('subject', cur); render(); window.scrollTo(0,0); };
+}
+// Erinnerungen abholen: beim Start, alle 90 Sekunden und wenn die App wieder sichtbar wird
+async function frPoll(){
+  const g = frGrp(); if(!g || !frOn() || !navigator.onLine || document.visibilityState==='hidden') return;
+  try{
+    const list = await fsList(frPath(g, 'members', lsGet('auth').uid, 'inbox'));
+    FR.inbox = list.filter(m => typeof m.text==='string').sort((x,y) => (y.at||0) - (x.at||0));
+    const seen = new Set(lsGet('grpseen') || []), fresh = FR.inbox.filter(m => !seen.has(m.id));
+    lsSet('grpseen', FR.inbox.map(m => m.id));
+    if(fresh.length) frNotify(fresh);
+    renderSide(); if(cur==='friends') frPaint();
+  }catch(e){}
+}
+async function frLoad(){
+  const g = frGrp(); if(!g || !frOn() || FR.busy) return;
+  FR.busy = true; FR.err = '';
+  try{
+    let mem;
+    try{ mem = await fsList(frPath(g, 'members')); }
+    catch(e){ await frPublish(true, g); mem = await fsList(frPath(g, 'members')); }   // eigener Eintrag fehlte: neu eintragen
+    FR.members = mem; FR.tasks = await fsList(frPath(g, 'tasks')); FR.t = Date.now();
+    await frPublish(!mem.some(m => m.id===lsGet('auth').uid), g);
+  }catch(e){ FR.err = e.message; }
+  FR.busy = false;
+  await frPoll();
+  if(cur==='friends') frPaint();
+}
+function frAgo(ts){
+  if(!ts) return 'noch nicht gelernt';
+  const dd = new Date(ts), day = new Date(dd.getFullYear(), dd.getMonth(), dd.getDate()), diff = Math.round((pDate(gToday()) - day)/86400000);
+  return diff<=0 ? 'heute gelernt' : diff===1 ? 'gestern gelernt' : diff<7 ? 'vor ' + diff + ' Tagen gelernt' : 'zuletzt am ' + dd.toLocaleDateString('de-CH', {day:'numeric', month:'numeric'}) + ' gelernt';
+}
+function frNavHtml(){
+  const g = frGrp(), n = g && frOn() ? FR.inbox.length : 0;
+  const info = !g ? 'Gruppe beitreten' : n ? n + ' Erinnerung' + (n===1 ? '' : 'en') : 'Gruppe ' + frStr(g.name, 40);
+  return '<button class="subj gnav ' + (cur==='friends' ? 'active' : '') + '" data-s="friends" title="Freunde und Hausaufgaben" style="--a:' + FR_TILE.g1 + ';--b:' + FR_TILE.g2 + '">'
+    + '<span class="stile"><svg viewBox="0 0 24 24" aria-hidden="true">' + FR_ICON + '</svg>' + (n ? '<span class="fbadge" aria-label="' + n + ' neue Erinnerungen">' + (n>9 ? '9+' : n) + '</span>' : '') + '</span>'
+    + '<span class="txt"><span class="nm">Freunde</span><span class="pr">' + esc(info) + '</span></span></button>';
+}
+const frTyping = id => { const ae = document.activeElement, box = document.getElementById(id); return !!(box && ae && box.contains(ae) && /INPUT|TEXTAREA|SELECT/.test(ae.tagName)); };
+// Die drei Live-Bereiche neu zeichnen (nicht, solange du darin tippst)
+function frPaint(){
+  const g = frGrp(); if(!g || cur!=='friends') return;
+  const a = lsGet('auth'), today = gToday(), done = store.get('grp.done', {}) || {};
+  const subjLabel = id => { const x = SUBJECTS.find(y => y.id===id); return x ? x.label : 'Allgemein'; };
+  const tasks = (FR.tasks || []).filter(t => typeof t.title==='string' && (!t.due || t.due >= FR.min7))
+    .sort((p,q) => (p.due || '9999').localeCompare(q.due || '9999') || (p.at||0) - (q.at||0));
+  const box = $('#frInbox');
+  if(box && !frTyping('frInbox')) box.innerHTML = FR.inbox.length ? '<div class="card frinbox"><h3>Erinnerungen an dich</h3>' + FR.inbox.map(m => {
+      const tk = m.task && FR.tasks ? FR.tasks.find(t => t.id===m.task) : null;
+      return '<div class="gitem"><span class="gt">' + esc(frStr(m.text, 300)) + '<small>' + esc([frName(m.from) || frStr(m.fromName, 30) || 'Jemand', m.at ? new Date(m.at).toLocaleString('de-CH', {day:'numeric', month:'numeric', hour:'2-digit', minute:'2-digit'}) : '', tk && !frStr(m.text, 300).includes(frStr(tk.title, 120)) ? 'zu «' + frStr(tk.title, 120) + '»' : ''].filter(Boolean).join(' · ')) + '</small></span><button class="chip" data-frok="' + esc(m.id) + '">Erledigt</button></div>'; }).join('') + '</div>' : '';
+  const mb = $('#frMembers');
+  if(mb && !frTyping('frMembers')){
+    const subs = SUBJECTS.filter(x => BANKS[x.id]);
+    const list = (FR.members || []).slice().sort((p,q) => (p.id===a.uid ? -1 : q.id===a.uid ? 1 : frStr(p.name, 30).localeCompare(frStr(q.name, 30), 'de')));
+    mb.innerHTML = (FR.err ? '<p class="fb bad">' + esc(FR.err) + '</p>' : '')
+      + (FR.members===null ? (FR.err ? '' : '<p class="muted">Lädt …</p>') : list.map(m => {
+        const me = m.id===a.uid, p = m.p && typeof m.p==='object' ? m.p : {};
+        return '<div class="frmem"><div class="frhead"><span class="nm">' + esc(frStr(m.name, 30) || 'Ohne Namen') + (me ? ' <em>(du)</em>' : '') + '<small>' + esc(frAgo(typeof m.last==='number' ? m.last : 0)) + '</small></span>'
+          + (me ? '' : '<button class="chip" data-frto="' + esc(m.id) + '">Erinnern</button>') + '</div>'
+          + '<div class="frbars">' + subs.map(x => { const v = frPct(p[x.id]); return '<div class="frbar" style="--a:' + x.g1 + ';--b:' + x.g2 + '"><span><em>' + esc(x.label) + '</em><b>' + (v===null ? '–' : v + ' %') + '</b></span><i><u style="width:' + (v || 0) + '%"></u></i></div>'; }).join('') + '</div>'
+          + (FR.to===m.id ? '<div class="frsend"><div class="gform"><label class="gl-t">Nachricht an ' + esc(frStr(m.name, 30)) + '<input type="text" id="frSendT" maxlength="300" value="' + esc(FR.draft) + '"></label>'
+            + '<label>Zu einer Hausaufgabe<select id="frSendK"><option value="">keine</option>' + tasks.map(t => '<option value="' + esc(t.id) + '">' + esc(frStr(t.title, 60)) + '</option>').join('') + '</select></label></div>'
+            + '<div class="row" style="margin-top:var(--s2)"><button class="btn" id="frSendGo">Senden</button><button class="btn ghost" id="frSendX">Abbrechen</button></div><p class="fb" id="frSendMsg" role="status"></p></div>' : '')
+          + '</div>'; }).join('') + (FR.members && list.length===1 ? '<p class="muted">Noch bist du allein in der Gruppe. Schick den Code unten an deine Freunde.</p>' : ''));
+  }
+  const tb = $('#frTasks');
+  if(tb && !frTyping('frTasks')) tb.innerHTML = FR.tasks===null ? '' : !tasks.length ? '<p class="muted" style="margin:var(--s3) 0 0">Noch keine Hausaufgaben eingetragen.</p>' : tasks.map(t => {
+      const dn = !!done[t.id], late = !dn && t.due && t.due < today, mine = t.by===a.uid, due = typeof t.due==='string' && /^\d{4}-\d{2}-\d{2}$/.test(t.due) ? t.due : '';
+      return '<div class="frtask' + (dn ? ' done' : '') + '"><input type="checkbox" data-frck="' + esc(t.id) + '"' + (dn ? ' checked' : '') + ' aria-label="Erledigt"><span class="gt">' + esc(frStr(t.title, 120))
+        + '<small>' + esc([subjLabel(t.subj), due ? 'bis ' + gDate(due) + (due===today ? ' (heute)' : '') : 'ohne Datum', 'von ' + (frName(t.by) || frStr(t.byName, 30) || 'jemandem')].join(' · ')) + (late ? ' · <span class="gbad">überfällig</span>' : '') + '</small></span>'
+        + '<button class="chip" data-frall="' + esc(t.id) + '">Alle erinnern</button>' + (mine ? '<span class="gact"><button data-frdel="' + esc(t.id) + '" aria-label="Hausaufgabe löschen" title="Löschen">' + gSvg('del') + '</button></span>' : '') + '</div>'; }).join('');
+  frBind();
+}
+async function frSend(to, text, task){
+  const g = frGrp(), a = lsGet('auth'); let ok = 0;
+  for(const uid of to){
+    const {r} = await fsReq(frPath(g, 'members', uid, 'inbox'), 'POST', {fields:fsFields({from:a.uid, fromName:g.me, text, task:task || '', at:Date.now()})});
+    if(r.ok) ok++; else if(r.status===403 && to.length===1) throw frErr(r);
+  }
+  return ok;
+}
+function frBind(){
+  const m = $('#main'), g = frGrp(); if(!g) return;
+  m.querySelectorAll('[data-frok]').forEach(b => b.onclick = async () => { b.disabled = true;
+    try{ const {r} = await fsReq(frPath(g, 'members', lsGet('auth').uid, 'inbox', b.dataset.frok), 'DELETE'); if(!r.ok && r.status!==404) throw frErr(r); FR.inbox = FR.inbox.filter(x => x.id!==b.dataset.frok); renderSide(); frPaint(); }
+    catch(e){ b.disabled = false; alert(e.message); } });
+  m.querySelectorAll('[data-frto]').forEach(b => b.onclick = () => { FR.to = FR.to===b.dataset.frto ? null : b.dataset.frto; FR.draft = FR.draft || 'Denk ans Lernen!'; frPaint(); const i = $('#frSendT'); if(i) i.focus(); });
+  if($('#frSendX')) $('#frSendX').onclick = () => { FR.to = null; frPaint(); };
+  if($('#frSendT')) $('#frSendT').oninput = e => { FR.draft = e.target.value; };
+  if($('#frSendGo')) $('#frSendGo').onclick = async () => {
+    const t = $('#frSendT').value.trim(), msg = $('#frSendMsg');
+    if(!t){ msg.className = 'fb bad'; msg.textContent = 'Schreib eine kurze Nachricht.'; return; }
+    msg.className = 'fb'; msg.textContent = 'Wird gesendet …';
+    try{ await frSend([FR.to], t, $('#frSendK').value); const nm = frName(FR.to); FR.to = null; FR.draft = ''; frPaint(); frToast('Erinnerung an ' + (nm || 'deinen Freund') + ' gesendet.'); }
+    catch(e){ msg.className = 'fb bad'; msg.textContent = e.message; } };
+  m.querySelectorAll('[data-frck]').forEach(c => c.onchange = () => { const d = store.get('grp.done', {}) || {}; if(c.checked) d[c.dataset.frck] = 1; else delete d[c.dataset.frck]; store.set('grp.done', d); frPaint(); });
+  m.querySelectorAll('[data-frdel]').forEach(b => b.onclick = async () => {
+    const t = (FR.tasks || []).find(x => x.id===b.dataset.frdel); if(!t || !confirm('«' + frStr(t.title, 120) + '» für alle in der Gruppe löschen?')) return;
+    try{ const {r} = await fsReq(frPath(g, 'tasks', t.id), 'DELETE'); if(!r.ok && r.status!==404) throw frErr(r); FR.tasks = FR.tasks.filter(x => x.id!==t.id); frPaint(); }catch(e){ alert(e.message); } });
+  m.querySelectorAll('[data-frall]').forEach(b => b.onclick = async () => {
+    const t = (FR.tasks || []).find(x => x.id===b.dataset.frall), others = (FR.members || []).filter(x => x.id!==lsGet('auth').uid);
+    if(!t) return; if(!others.length){ alert('Noch ist niemand sonst in der Gruppe.'); return; }
+    if(!confirm('Alle ' + others.length + ' anderen in der Gruppe an «' + frStr(t.title, 120) + '» erinnern?')) return;
+    b.disabled = true;
+    try{ const n = await frSend(others.map(x => x.id), 'Erinnerung: «' + frStr(t.title, 120) + '»' + (t.due ? ' bis ' + gDate(t.due) : ''), t.id); frToast(n + ' Erinnerung' + (n===1 ? '' : 'en') + ' gesendet.'); }
+    catch(e){ alert(e.message); } b.disabled = false; });
+}
+function frToast(txt){ let t = $('#frtoast'); if(!t){ t = document.createElement('div'); t.id = 'frtoast'; t.className = 'toast'; t.setAttribute('role', 'status'); document.body.appendChild(t); } t.innerHTML = '<span></span>'; t.querySelector('span').textContent = txt; clearTimeout(frToast.t); frToast.t = setTimeout(() => t.remove(), 3500); }
+function viewFriends(){
+  const m = $('#main'), g = frGrp(), a = frOn() ? lsGet('auth') : null;
+  FR.min7 = (() => { const d = pDate(gToday()); d.setDate(d.getDate() - 7); return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); })();
+  const hero = sub => '<header class="hero ghero"><span class="hicon"><svg viewBox="0 0 24 24" aria-hidden="true">' + FR_ICON + '</svg></span><div class="htxt"><p class="hkick">BIN26a · BMZ</p><h2>Freunde</h2><p class="hsub">' + sub + '</p></div></header>';
+  const privacy = '<p class="ghint">Deine Gruppe sieht nur deinen Namen, wie viel Prozent du pro Fach verstanden hast und wann du zuletzt gelernt hast. Noten, Notizen und deine E-Mail bleiben privat.</p>';
+  if(!a){
+    m.innerHTML = hero('Fortschritt teilen, Hausaufgaben und Erinnerungen') + '<div id="view"><div class="card"><h3>Melde dich zuerst an</h3><p class="muted">Für die Klassengruppe brauchst du ein Konto. Dann siehst du, wie weit deine Freunde sind, und ihr könnt euch an Hausaufgaben erinnern.</p><div class="row"><button class="btn" id="frLogin">Anmelden oder Konto erstellen</button></div>' + privacy + '</div></div>';
+    $('#frLogin').onclick = openSync; return;
+  }
+  if(!g){
+    m.innerHTML = hero('Fortschritt teilen, Hausaufgaben und Erinnerungen') + '<div id="view">'
+      + '<div class="card"><h3>Gruppe beitreten</h3><p class="muted">Frag jemanden aus deiner Gruppe nach dem Code.</p><div class="gform"><label class="gl-n">Code<input type="text" id="frJC" maxlength="12" placeholder="ABCD-EFGH" autocomplete="off" autocapitalize="characters" spellcheck="false"></label><label class="gl-t">Dein Name in der Gruppe<input type="text" id="frJN" maxlength="30" placeholder="z. B. Alex"></label></div>'
+      + '<div class="row" style="margin-top:var(--s3)"><button class="btn" id="frJoin">Beitreten</button></div><p class="fb" id="frJMsg" role="status"></p></div>'
+      + '<div class="card"><h3>Neue Gruppe erstellen</h3><p class="muted">Du bekommst einen Code, den du in den Klassenchat schicken kannst.</p><div class="gform"><label class="gl-t">Name der Gruppe<input type="text" id="frNG" maxlength="40" value="BIN26a"></label><label class="gl-t">Dein Name in der Gruppe<input type="text" id="frNN" maxlength="30" placeholder="z. B. Alex"></label></div>'
+      + '<div class="row" style="margin-top:var(--s3)"><button class="btn ghost" id="frNew">Gruppe erstellen</button></div><p class="fb" id="frNMsg" role="status"></p>' + privacy + '</div></div>';
+    const say = (id, t, ok) => { const e = $(id); e.className = 'fb' + (ok===undefined ? '' : ok ? ' ok' : ' bad'); e.textContent = t; };
+    const clean = v => v.trim().replace(/\s+/g, ' ');
+    $('#frJoin').onclick = async () => {
+      const code = frNorm($('#frJC').value), me = clean($('#frJN').value);
+      if(code.length!==8 || /[^A-Z2-9]/.test(code)) return say('#frJMsg', 'Der Code hat 8 Zeichen, zum Beispiel ABCD-EFGH.', false);
+      if(!me) return say('#frJMsg', 'Gib deinen Namen ein.', false);
+      say('#frJMsg', 'Einen Moment …');
+      try{ const {r, j} = await fsReq('groups/' + code);
+        if(r.status===404) return say('#frJMsg', 'Diesen Code gibt es nicht. Prüf ihn nochmals.', false);
+        if(!r.ok) throw frErr(r);
+        const ng = {id:code, name:frStr(fsDoc(j).name, 40) || 'Gruppe', me};
+        FR.members = null; FR.tasks = null; FR.inbox = []; FR.t = 0;
+        await frPublish(true, ng); store.set('grp', ng); render(); }
+      catch(e){ say('#frJMsg', e.message, false); } };
+    $('#frNew').onclick = async () => {
+      const name = clean($('#frNG').value), me = clean($('#frNN').value);
+      if(!name) return say('#frNMsg', 'Gib der Gruppe einen Namen.', false);
+      if(!me) return say('#frNMsg', 'Gib deinen Namen ein.', false);
+      say('#frNMsg', 'Einen Moment …');
+      try{
+        for(let i = 0; i < 4; i++){
+          const code = frCode(), {r} = await fsReq('groups?documentId=' + code, 'POST', {fields:fsFields({name, owner:lsGet('auth').uid, created:Date.now()})});
+          if(r.status===409) continue; if(!r.ok) throw frErr(r);
+          const ng = {id:code, name, me}; FR.members = null; FR.tasks = null; FR.inbox = []; FR.t = 0;
+          await frPublish(true, ng); store.set('grp', ng); render(); return;
+        }
+        throw new Error('Kein freier Code gefunden. Versuch es nochmals.');
+      }catch(e){ say('#frNMsg', e.message, false); } };
+    return;
+  }
+  const canN = typeof Notification!=='undefined';
+  const subOpts = '<option value="">Allgemein</option>' + SUBJECTS.map(x => '<option value="' + x.id + '">' + esc(x.label) + '</option>').join('');
+  m.innerHTML = hero('Gruppe «' + esc(frStr(g.name, 40)) + '» · Code ' + frFmt(g.id)) + '<div id="view">'
+    + '<div id="frInbox"></div>'
+    + '<div class="card"><h3>Wer ist wie weit?</h3><div id="frMembers"></div><div class="row" style="margin-top:var(--s3)"><button class="btn ghost" id="frReload">Aktualisieren</button></div></div>'
+    + '<div class="card"><h3>Hausaufgaben und Termine</h3><p class="muted">Alle in der Gruppe sehen die Liste. Abhaken gilt nur für dich.</p>'
+    + '<div class="gform"><label>Fach<select id="frTS">' + subOpts + '</select></label><label class="gl-t">Was?<input type="text" id="frTT" maxlength="120" placeholder="z. B. Aufgabe 27 fertig lösen"></label><label>Bis<input type="date" id="frTD"></label></div>'
+    + '<div class="row" style="margin-top:var(--s3)"><button class="btn" id="frTAdd">Eintragen</button></div><p class="fb" id="frTMsg" role="status"></p><div id="frTasks"></div></div>'
+    + '<div class="card"><h3>Gruppe</h3><p style="margin:0 0 var(--s2)">Code zum Einladen: <b class="frcode">' + frFmt(g.id) + '</b></p><div class="row"><button class="btn ghost" id="frCopy">Code kopieren</button></div>'
+    + '<h4>Benachrichtigungen</h4><p class="muted" id="frNState" style="margin:0 0 var(--s2)">' + (!canN ? 'Dieser Browser kann keine Benachrichtigungen zeigen. Erinnerungen siehst du hier und als Zahl bei «Freunde».' : Notification.permission==='granted' ? 'An. Neue Erinnerungen erscheinen als Benachrichtigung, solange das Lerntool offen ist.' : Notification.permission==='denied' ? 'Im Browser blockiert. Du kannst sie in den Website-Einstellungen erlauben.' : 'Aus. Erinnerungen siehst du hier und als Zahl bei «Freunde».') + '</p>'
+    + (canN && Notification.permission==='default' ? '<div class="row"><button class="btn ghost" id="frNotif">Benachrichtigungen erlauben</button></div>' : '')
+    + '<h4>Dein Name in der Gruppe</h4><div class="gx"><label class="gl-t">Name<input type="text" id="frMe" maxlength="30" value="' + esc(g.me) + '"></label></div><div class="row" style="margin-top:var(--s2)"><button class="btn ghost" id="frMeSave">Speichern</button></div><p class="fb" id="frMeMsg" role="status"></p>'
+    + privacy + '<div class="row" style="margin-top:var(--s3)"><button class="chip" id="frLeave">Gruppe verlassen</button></div></div></div>';
+  frPaint();
+  $('#frReload').onclick = () => { FR.t = 0; frLoad(); };
+  $('#frCopy').onclick = async () => { try{ await navigator.clipboard.writeText(frFmt(g.id)); frToast('Code ' + frFmt(g.id) + ' kopiert.'); }catch(e){ frToast('Code: ' + frFmt(g.id)); } };
+  if($('#frNotif')) $('#frNotif').onclick = () => Notification.requestPermission().then(() => render());
+  $('#frMeSave').onclick = async () => { const me = $('#frMe').value.trim().replace(/\s+/g, ' '), el = $('#frMeMsg');
+    if(!me){ el.className = 'fb bad'; el.textContent = 'Gib einen Namen ein.'; return; }
+    try{ const ng = {...g, me}; await frPublish(true, ng); store.set('grp', ng); el.className = 'fb ok'; el.textContent = 'Gespeichert.'; }catch(e){ el.className = 'fb bad'; el.textContent = e.message; } };
+  $('#frTAdd').onclick = async () => {
+    const title = $('#frTT').value.trim().replace(/\s+/g, ' '), due = $('#frTD').value, subj = $('#frTS').value, el = $('#frTMsg');
+    if(!title){ el.className = 'fb bad'; el.textContent = 'Schreib, was zu tun ist.'; return; }
+    el.className = 'fb'; el.textContent = 'Wird eingetragen …';
+    try{ const {r, j} = await fsReq(frPath(g, 'tasks'), 'POST', {fields:fsFields({title, subj, due:/^\d{4}-\d{2}-\d{2}$/.test(due) ? due : '', by:lsGet('auth').uid, byName:g.me, at:Date.now()})});
+      if(!r.ok) throw frErr(r);
+      FR.tasks = (FR.tasks || []).concat([fsDoc(j)]); $('#frTT').value = ''; $('#frTD').value = ''; el.className = 'fb ok'; el.textContent = 'Eingetragen. Alle in der Gruppe sehen es.'; frPaint(); }
+    catch(e){ el.className = 'fb bad'; el.textContent = e.message; } };
+  $('#frTT').addEventListener('keydown', ev => { if(ev.key==='Enter'){ ev.preventDefault(); $('#frTAdd').click(); } });
+  $('#frLeave').onclick = async () => {
+    if(!confirm('Gruppe «' + frStr(g.name, 40) + '» verlassen? Deine Freunde sehen dich dann nicht mehr. Hausaufgaben, die du eingetragen hast, bleiben.')) return;
+    try{ const uid = lsGet('auth').uid;
+      for(const x of FR.inbox) await fsReq(frPath(g, 'members', uid, 'inbox', x.id), 'DELETE');
+      const {r} = await fsReq(frPath(g, 'members', uid), 'DELETE'); if(!r.ok && r.status!==404) throw frErr(r);
+      store.set('grp', null); lsSet('grppub', null); FR.members = null; FR.tasks = null; FR.inbox = []; FR.to = null; render(); }
+    catch(e){ alert(e.message); } };
+  if(Date.now() - FR.t > 20000) frLoad();
+}
+setTimeout(frPoll, 1500);
+setInterval(frPoll, 90000);
+document.addEventListener('visibilitychange', () => { if(document.visibilityState==='visible') frPoll(); });
 
 // Online als Handy-App: Symbol, Vollbild und Offline-Betrieb (nur über https, nicht als lokale Datei)
 if(/^https?:$/.test(location.protocol)){
