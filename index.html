@@ -483,6 +483,13 @@ svg circle.cp,svg circle.cn{stroke:rgba(0,0,0,.28);stroke-width:.6}
 .m319u{align-self:flex-end;background:var(--accent-fill);color:#fff}
 [data-design="studio"] .m319u{color:#161614}
 
+/* ---------- Französisch: Lernplan ---------- */
+.fzpday{margin:var(--s4) 0 var(--s1);font:700 var(--t-m)/1.3 var(--f-head)}
+.fzpday.today{color:var(--accent-text)}
+.fzpday .muted{font:500 var(--t-xs)/1 var(--f-ui)}
+.fzpblock .chip{margin-top:var(--s1)}
+.fzpblock.done>span>b{color:var(--ink-2);text-decoration:line-through}
+
 /* ---------- Streak, Rangliste, Duell ---------- */
 .actrow{display:flex;align-items:center;gap:var(--s3);margin-bottom:var(--s3)}
 .actflame{position:relative;width:56px;height:56px;flex:none;display:grid;place-items:center;color:var(--line-strong)}
@@ -1695,15 +1702,51 @@ function fzSim(){
 
 
 /* ---------- Übersicht ---------- */
+// Lernplan: Links sind Übungs-IDs oder test, theory, cards, sim (Prüfungssimulation)
+const FZPLAN = [
+  {d:'2026-11-18', blocks:[
+    {id:'p-mi1', t:'Standort bestimmen', min:25, txt:'Probetest mit 10 Fragen, alle Themen. In der Auswertung siehst du, welche Teile noch wackeln: Die nimmst du in den nächsten Tagen besonders ernst.', go:['test']},
+    {id:'p-mi2', t:'Voci: Les sports', min:20, txt:'Wörter mit Artikel lernen, dann Deutsch → Französisch üben.', go:['fzv1','cards']}]},
+  {d:'2026-11-19', blocks:[
+    {id:'p-do1', t:'Adjektive: weibliche Form und Mehrzahl', min:30, txt:'Zuerst die Theorie-Karten zu den Adjektiven, dann die drei Formen-Tabellen.', go:['theory','fza1','fza2','fza3']},
+    {id:'p-do2', t:'Voci: Les loisirs und jouer à / jouer de', min:30, txt:'Freizeit-Wörter mit Artikel, dann jouer au tennis, jouer du piano.', go:['fzv3','fzv9']}]},
+  {d:'2026-11-20', blocks:[
+    {id:'p-fr1', t:'Adjektive: Stellung, beau / nouveau / vieux', min:30, txt:'Vor oder nach dem Nomen? Und bel, nouvel, vieil vor einem Vokal.', go:['fza4','fza5','fza6','fza8']},
+    {id:'p-fr2', t:'Voci: Lieux und Verben, faire du / de la', min:30, txt:'Orte für die Freizeit und die wichtigsten Verben.', go:['fzv5','fzv7','fzv10']}]},
+  {d:'2026-11-21', blocks:[
+    {id:'p-sa1', t:'Komparativ und Superlativ', min:45, txt:'plus / moins / aussi … que, autant (de), mieux oder meilleur, le plus. Erst die Theorie, dann die Übungen.', go:['fzb1','fzb2','fzb3','fzb4','fzc1']},
+    {id:'p-sa2', t:'Adverbien', min:45, txt:'Bildung mit -ment, -amment, -emment, bien und mal. Danach: Adjektiv oder Adverb, und wo steht das Adverb?', go:['fzd1','fzd2','fzd3','fzd4']}]},
+  {d:'2026-11-22', blocks:[
+    {id:'p-so1', t:'Probeprüfung Grammaire', min:30, txt:'So sieht die Grammaire in der Prüfung aus. Ohne Hilfe lösen, dann vergleichen.', go:['fzp1','fzp2','fzp3']},
+    {id:'p-so2', t:'Lesen und Hören', min:30, txt:'Drei Lesetexte und zwei Hörtexte mit Fragen.', go:['fzl1','fzl2','fzl3','fzh1','fzh2']},
+    {id:'p-so3', t:'Übersetzung', min:20, txt:'Deutsch → Französisch und zurück. Achte auf Artikel, Angleichung und die Stellung.', go:['fzu1','fzu2']},
+    {id:'p-so4', t:'Prüfungssimulation', min:25, txt:'Alle fünf Teile wie in der echten Prüfung. Danach nur noch die Fehler anschauen, dann Schluss.', go:['sim']}]},
+  {d:'2026-11-23', blocks:[
+    {id:'p-mo1', t:'Kurz aufwärmen', min:15, txt:'Am Morgen nur die Voci mit den Karteikarten und die Eselsbrücke zu bien / bon. Ausgeschlafen hingehen.', go:['cards']}]}
+];
+const FZGO = {test:'Probetest', theory:'Theorie', cards:'Karteikarten', sim:'Prüfungssimulation'};
+function fzPlanCard(){
+  const plan = store.get('bz.plan',{}), tk = todayKey(), all = FZPLAN.flatMap(w => w.blocks), done = all.filter(b => plan[b.id]).length;
+  const title = id => { if(FZGO[id]) return FZGO[id]; const e = FRA_EX.find(x => x.id===id); return e ? e.title : id; };
+  return '<div class="card"><h3>Lernplan bis zur Prüfung</h3><p class="muted">Mittwoch bis Montag, Blöcke von 15 bis 45 Minuten, zusammen etwa ' + Math.round(all.reduce((a,b) => a + b.min, 0)/6)/10 + ' Stunden. Nach jedem Block kurz Pause. Hake ab, was du gemacht hast.</p>'
+    + '<div class="progress"><i style="width:' + Math.round(done/all.length*100) + '%"></i></div><p class="muted" style="margin:var(--s1) 0 0;font-size:var(--t-xs)">' + done + ' von ' + all.length + ' Blöcken erledigt</p>'
+    + FZPLAN.map(w => '<h4 class="fzpday' + (w.d===tk ? ' today' : '') + '">' + pDate(w.d).toLocaleDateString('de-CH', {weekday:'long', day:'numeric', month:'long'}) + (w.d===tk ? ' · heute' : '') + ' <span class="muted">' + w.blocks.reduce((a,b) => a + b.min, 0) + ' Min.</span></h4>'
+      + w.blocks.map(b => '<label class="goal fzpblock' + (plan[b.id] ? ' done' : '') + '"><input type="checkbox" data-fzp="' + b.id + '"' + (plan[b.id] ? ' checked' : '') + '><span><b>' + esc(b.t) + '</b> <span class="muted">· ' + b.min + ' Min.</span><br><span class="muted">' + esc(b.txt) + '</span><br>'
+        + b.go.map(g => '<button type="button" class="chip" ' + (FZGO[g] ? 'data-fzgo' : 'data-ex') + '="' + g + '">' + esc(title(g)) + '</button>').join(' ') + '</span></label>').join('')).join('')
+    + '</div>';
+}
 const BZ_EXAM = '2026-11-23';   // laut Kursnotizbuch «06 examen»: Adj. / Adv. + voci, zählt 1.0
 function viewFRAOverview(v){
   const g = store.get('bz.goals',{}), date = store.get('bz.date',BZ_EXAM), n = FRA.goals.filter((_,i) => g[i]).length, d = examDays({id:'bz'});
   const big = d===null ? '' : d>0 ? `<div class="big">${d}</div><div><h3 style="margin:0">Tag${d===1?'':'e'} bis zur Französisch-Prüfung</h3><p class="muted" style="margin:var(--s1) 0 0">${pDate(date).toLocaleDateString('de-CH',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}</p></div>`
     : d===0 ? '<div class="big">0</div><h3>Heute ist die Prüfung. Viel Erfolg !</h3>' : '<div class="big">–</div><h3>Die Prüfung ist vorbei</h3>';
   const ch = (id, label) => `<button class="chip" data-ex="${id}">${esc(label)}</button>`;
+  const pday = FZPLAN.find(w => w.d===todayKey());
   v.innerHTML = `
     <div class="card countdown">${big || '<div><h3 style="margin:0">Wann ist die Prüfung?</h3><p class="muted" style="margin:var(--s1) 0 0">Trag das Datum ein, dann siehst du hier einen Countdown.</p></div>'}
+      ${pday ? `<p style="flex-basis:100%;margin:0"><b>Heute:</b> ${pday.blocks.map(b => esc(b.t)).join(', ')} (etwa ${pday.blocks.reduce((a,b) => a + b.min, 0)} Minuten). Siehe Lernplan unten.</p>` : ''}
       <div class="row" style="margin-left:auto"><label class="muted" for="bzdate">Prüfungsdatum</label><input type="date" id="bzdate" value="${esc(date)}"></div></div>
+    ${fzPlanCard()}
     <div class="card"><h3>So ist die Prüfung aufgebaut</h3>
       <p class="muted">Die fünf Teile hast du von der Lehrperson. Das Dokument «ex. comp.superl.» ist eine Probeprüfung und zeigt, wie die Grammaire aussieht.</p>
       <div class="tablewrap"><table>
@@ -1724,6 +1767,9 @@ function viewFRAOverview(v){
   v.querySelectorAll('[data-ex]').forEach(b => b.onclick = () => { tab = 'ex'; store.set('tab',tab); openEx(b.dataset.ex); });
   $('#bzdate').onchange = ev => { store.set('bz.date', ev.target.value); viewFRAOverview(v); renderSide(); };
   $('#fzSimGo').onclick = () => fzSim();
+  v.querySelectorAll('[data-fzp]').forEach(c => c.onchange = () => { const p = store.get('bz.plan',{}); p[c.dataset.fzp] = c.checked; store.set('bz.plan', p); viewFRAOverview(v); });
+  v.querySelectorAll('[data-fzgo]').forEach(b => b.onclick = ev => { ev.preventDefault(); const g = b.dataset.fzgo; if(g==='sim') return fzSim(); tab = g; store.set('tab', tab); exOpen = null; render(); window.scrollTo(0,0); });
+  v.querySelectorAll('.fzpblock [data-ex]').forEach(b => b.addEventListener('click', ev => ev.preventDefault()));
 }
 
 /* ---------- Theorie ---------- */
