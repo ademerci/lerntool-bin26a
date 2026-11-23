@@ -490,6 +490,10 @@ svg circle.cp,svg circle.cn{stroke:rgba(0,0,0,.28);stroke-width:.6}
 .fzpblock .chip{margin-top:var(--s1)}
 .fzpblock.done>span>b{color:var(--ink-2);text-decoration:line-through}
 
+.bgq{padding:var(--s2) 0;border-top:1px solid var(--line);font:var(--t-s)/1.5 var(--f-ui)}
+.bgq>summary{cursor:pointer}
+.bgq>p{margin:var(--s2) 0 0;padding:var(--s2) var(--s3);border-radius:var(--r-ctl);background:var(--sunken)}
+
 /* ---------- Streak, Rangliste, Duell ---------- */
 .actrow{display:flex;align-items:center;gap:var(--s3);margin-bottom:var(--s3)}
 .actflame{position:relative;width:56px;height:56px;flex:none;display:grid;place-items:center;color:var(--line-strong)}
@@ -997,6 +1001,7 @@ function quizPool(){
   if(cur==='bz') return FRA_QUIZ;
   if(cur==='bn') return BN_QUIZ;
   if(cur==='m3') return M3_QUIZ;
+  if(cur==='bg') return BG_QUIZ;
   const names = {'1':'Urproduktion','2':'Verarbeitung (Industrie und Gewerbe)','3':'Dienstleistung'};
   const gen = EXERCISES.find(e => e.id==='e2').rows.filter(r => !r[2]).map(r => ({
     q:'Zu welchem Sektor gehört: '+r[0].replace(/^\w\)\s*/,'')+'?',
@@ -2337,7 +2342,177 @@ function viewM319Ex(v){
   if(m[1]==='s'){ const t = m319Spick()[+m[2]-1]; v.innerHTML = '<div class="row" style="margin-bottom:var(--s3)"><button class="btn ghost" id="x3back">← Alle KNs</button></div><div class="card"><h3>Spickzettel ' + esc(t.t) + '</h3>' + t.h + '</div>'; $('#x3back').onclick = () => { exOpen = null; render(); }; return; }
   return m[1]==='u' ? viewM319Ub(v, +m[2]) : viewM319Gs(v, +m[2]);
 }
-const BANKS = {bw:bankBW, bz:bankFRA, bn:bankBN};
+/* ---------- Geschichte und Politik: Die amerikanische Revolution 1763–1789 (Yve Schmid) ---------- */
+// Lernziele aus «1. Lernziele.pdf». Erklärungen, Quiz und Glossar selbst geschrieben (Dossier, PPT und Glossar der Lehrperson lagen nicht vor).
+const BG = {
+  chapter:'Die Geschichte der amerikanischen Revolution 1763–1789',
+  goals:[
+    {t:'Die Puritaner und ihre Hoffnungen',
+     z:'Beschreiben können, welche Hoffnungen und Absichten die Puritaner für ihr Leben in Nordamerika hatten, als sie 1620 nach Nordamerika ausgewandert sind.',
+     h:'<ul><li>In England wurden die Puritaner von der anglikanischen Staatskirche und dem König <b>verfolgt</b>. Sie wollten die Kirche von allem «Katholischen» reinigen (lateinisch <i>purus</i> = rein).</li><li>Ihre Hoffnung: in Nordamerika ihren <b>Glauben frei leben</b> und eine <b>gottgefällige Gemeinschaft</b> aufbauen, ein Vorbild für die Welt, die «City upon a Hill» (John Winthrop).</li><li>1620 landeten die Pilgerväter mit der <b>Mayflower</b>. Im <b>Mayflower Compact</b> versprachen sie, sich selbst Gesetze zu geben und sich ihnen zu fügen: ein früher Schritt zur <b>Selbstverwaltung</b>.</li><li>Dazu kamen ganz praktische Hoffnungen: <b>eigenes Land</b> und ein Neuanfang.</li></ul>',
+     q:'Warum wanderten die Puritaner 1620 nach Nordamerika aus, und was wollten sie dort aufbauen?',
+     m:'Sie wurden in England wegen ihres Glaubens verfolgt und wollten in Nordamerika frei nach ihrem Glauben leben. Sie wollten eine gottgefällige Vorbild-Gemeinschaft aufbauen («City upon a Hill»), die sich selbst verwaltet (Mayflower Compact), und hofften auf eigenes Land und einen Neuanfang.'},
+    {t:'Prädestinationslehre und Widerstandsrecht',
+     z:'Den Glauben der Puritaner (Prädestinationslehre und Widerstandsrecht) beschreiben und erklären können, inwiefern das Widerstandsrecht eine wichtige Forderung der Aufklärung war.',
+     h:'<ul><li><b>Prädestinationslehre</b> (nach Calvin): Gott hat schon vor der Geburt bestimmt, wer erlöst wird. Niemand weiss es sicher, aber ein <b>fleissiges, sittenstrenges und erfolgreiches Leben</b> galt als Zeichen, auserwählt zu sein. Daraus entstand eine starke Arbeitsethik.</li><li><b>Widerstandsrecht</b>: Eine Obrigkeit, die gegen Gottes Gebote handelt und das Volk unterdrückt, verliert ihre Berechtigung. Dann darf, ja muss man sich gegen sie wehren.</li><li><b>Bezug zur Aufklärung</b>: John Locke begründete das Widerstandsrecht ohne Religion. Jeder Mensch hat <b>Naturrechte</b> (Leben, Freiheit, Eigentum). Die Regierung beruht auf einem <b>Vertrag</b> mit dem Volk und muss diese Rechte schützen. Verletzt sie sie, darf das Volk sie <b>absetzen</b>. Genau damit begründeten die Kolonisten 1776 ihre Unabhängigkeit.</li></ul>',
+     q:'Was besagen die Prädestinationslehre und das Widerstandsrecht, und warum war das Widerstandsrecht für die Aufklärung wichtig?',
+     m:'Prädestination: Gott hat im Voraus bestimmt, wer erlöst wird; ein fleissiges, erfolgreiches Leben galt als Zeichen der Erwählung. Widerstandsrecht: Gegen eine ungerechte, gottlose Obrigkeit darf man sich wehren. Die Aufklärung (Locke) begründete es weltlich: Die Regierung muss die Naturrechte schützen, sonst darf das Volk sie absetzen. So rechtfertigten die Kolonisten ihre Revolution.'},
+    {t:'Nördliche, mittlere und südliche Kolonien',
+     z:'Die wirtschaftlichen und kulturellen Unterschiede der nördlichen, mittleren und südlichen Kolonien erklären können.',
+     h:'<table><tr><th></th><th>Nördliche (Neuengland)</th><th>Mittlere</th><th>Südliche</th></tr><tr><td>Beispiele</td><td>Massachusetts, Connecticut</td><td>New York, Pennsylvania, New Jersey</td><td>Virginia, Carolina, Georgia</td></tr><tr><td>Wirtschaft</td><td>kleine Farmen (karger Boden, kaltes Klima), Fischerei, Schiffbau, Handel, Handwerk</td><td>fruchtbarer Boden: Getreide («Brotkorb»), Handel über Häfen</td><td>grosse <b>Plantagen</b> mit Tabak, Reis, Indigo; <b>Sklaverei</b></td></tr><tr><td>Gesellschaft und Kultur</td><td>puritanisch, streng religiös, Dörfer und Städte (Boston), Schulen, Gemeindeversammlungen</td><td>religiös und ethnisch <b>vielfältig</b> und tolerant (Quäker in Pennsylvania), Städte wie Philadelphia</td><td>anglikanisch, Elite von Grossgrundbesitzern, wenige Städte, verstreute Siedlungen</td></tr></table>',
+     q:'Wie unterschieden sich die nördlichen, mittleren und südlichen Kolonien wirtschaftlich und kulturell?',
+     m:'Norden: kleine Farmen, Fischerei, Schiffbau und Handel, puritanisch geprägt mit Städten und Schulen. Mitte: fruchtbarer Boden mit Getreideanbau und Handel, religiös und ethnisch vielfältig und tolerant. Süden: grosse Plantagen (Tabak, Reis) mit Sklaven, Elite von Grossgrundbesitzern, wenige Städte.'},
+    {t:'Wahlrecht in den Kolonien',
+     z:'Erklären können, wieso der Anteil der wahlberechtigten Männer in den Kolonien weit grösser war als in Grossbritannien.',
+     h:'<ul><li>Wählen durfte nur, wer <b>Grundbesitz</b> (oder ein gewisses Vermögen) hatte, in England wie in den Kolonien.</li><li>In England gehörte das Land wenigen Adligen und Reichen, darum durfte nur ein <b>kleiner Teil</b> der Männer wählen.</li><li>In den Kolonien gab es <b>viel billiges Land</b>. Viele weisse Männer konnten Land erwerben und erfüllten so die Bedingung: In vielen Kolonien war <b>die Mehrheit</b> der weissen Männer wahlberechtigt.</li><li>Ausgeschlossen blieben aber Frauen, Sklaven, Indigene und Besitzlose.</li></ul>',
+     q:'Warum durften in den Kolonien viel mehr Männer wählen als in Grossbritannien?',
+     m:'Das Wahlrecht war an Landbesitz gebunden. In Grossbritannien besassen nur wenige Land, in den Kolonien gab es viel billiges Land, das viele weisse Männer erwerben konnten. Darum erfüllte dort die Mehrheit der weissen Männer die Bedingung. Frauen, Sklaven und Indigene blieben ausgeschlossen.'},
+    {t:'Die Kolonien und das Mutterland',
+     z:'Erklären können, welche wirtschaftliche Rolle die 13 Kolonien für das britische Mutterland spielten und welche Auswirkungen dies auf die Beziehung zwischen den Kolonien und Grossbritannien hatte.',
+     h:'<ul><li>Nach dem <b>Merkantilismus</b> sollten Kolonien dem Mutterland nützen: Sie lieferten <b>billige Rohstoffe</b> (Tabak, Holz, Pelze, Reis) und waren ein <b>Absatzmarkt</b> für britische Fertigwaren.</li><li>Die <b>Navigation Acts</b> schrieben vor, dass wichtige Waren nur mit britischen Schiffen und nur nach Grossbritannien gehandelt werden durften.</li><li>Lange setzte London diese Regeln nur locker durch («salutary neglect»). Die Kolonien gewöhnten sich an <b>Selbstverwaltung</b> und Schmuggel.</li><li>Als Grossbritannien nach 1763 strenger kontrollierte und neue Steuern verlangte, fühlten sich die Kolonisten ausgebeutet und bevormundet: Das führte zu wachsendem Widerstand.</li></ul>',
+     q:'Welche wirtschaftliche Rolle spielten die 13 Kolonien für Grossbritannien, und was bedeutete das für die Beziehung?',
+     m:'Nach dem Merkantilismus lieferten sie billige Rohstoffe und kauften britische Fertigwaren; die Navigation Acts beschränkten ihren Handel auf Grossbritannien. Weil London lange wenig kontrollierte, gewöhnten sich die Kolonien an Selbstverwaltung. Als nach 1763 strengere Kontrollen und Steuern kamen, fühlten sie sich ausgebeutet und es kam zum Konflikt.'},
+    {t:'Der Siebenjährige Krieg und die Royal Proclamation Line',
+     z:'Die Ursachen des Siebenjährigen Krieges in Nordamerika darlegen und die Folgen des Krieges auf die Beziehung zwischen den Kolonisten und dem Mutterland («Royal Proclamation Line») erklären können.',
+     h:'<ul><li><b>Ursachen</b> (in Nordamerika «French and Indian War», 1754–1763): Frankreich und Grossbritannien stritten um die Gebiete im <b>Westen</b>, besonders das <b>Ohio-Tal</b>, und um den Pelzhandel. Die Kolonisten wollten nach Westen siedeln, Frankreich wollte seine Gebiete von Kanada bis Louisiana verbinden.</li><li><b>Ergebnis</b>: Grossbritannien gewann (Frieden von Paris 1763) und erhielt Kanada und das Land bis zum Mississippi.</li><li><b>Folgen</b>: Der Krieg hinterliess hohe <b>Schulden</b>. London fand, die Kolonien sollten mitzahlen, und führte <b>Steuern</b> ein (Sugar Act 1764, Stamp Act 1765).</li><li><b>Royal Proclamation Line</b> (1763): Westlich der Appalachen durften Kolonisten <b>nicht siedeln</b>, um teure Kriege mit den Indigenen zu vermeiden. Die Kolonisten fühlten sich um den Lohn ihres Kampfes betrogen.</li></ul>',
+     q:'Warum kam es zum Siebenjährigen Krieg in Nordamerika, und wie veränderte er die Beziehung zwischen Kolonisten und Mutterland?',
+     m:'Frankreich und Grossbritannien kämpften um die Gebiete im Westen, vor allem das Ohio-Tal. Grossbritannien gewann, hatte aber hohe Schulden und verlangte deshalb Steuern von den Kolonien. Mit der Royal Proclamation Line 1763 verbot es das Siedeln westlich der Appalachen. Die Kolonisten fühlten sich betrogen und bevormundet, die Spannungen wuchsen.'},
+    {t:'Die Boston Tea Party',
+     z:'Erklären können, wie es zur Boston Tea Party kam und wieso sich die Sons of Liberty als Indigene verkleideten.',
+     h:'<ul><li>Nach 1763 erhob Grossbritannien neue Steuern, ohne dass die Kolonien im Parlament vertreten waren. Der Protest lautete: <b>«No taxation without representation»</b> (keine Steuern ohne Vertretung).</li><li>Die meisten Steuern wurden nach Boykotten zurückgenommen, die <b>Teesteuer blieb</b> aber bestehen.</li><li>Der <b>Tea Act</b> von 1773 gab der East India Company das <b>Monopol</b> auf Tee. Der Tee wurde zwar billiger, die Steuer blieb aber, und einheimische Händler wurden verdrängt.</li><li>Am <b>16. Dezember 1773</b> warfen die <b>Sons of Liberty</b> in Boston 342 Kisten Tee ins Hafenbecken.</li><li><b>Warum als Indigene (Mohawk) verkleidet?</b> Um <b>nicht erkannt</b> und bestraft zu werden, und als <b>Symbol</b>: Sie zeigten, dass sie sich als Amerikaner sahen, nicht mehr als Briten.</li><li>Folge: Die harten <b>Intolerable Acts</b> (1774), unter anderem wurde der Hafen von Boston geschlossen.</li></ul>',
+     q:'Wie kam es zur Boston Tea Party, und warum verkleideten sich die Sons of Liberty als Indigene?',
+     m:'Die Kolonien mussten Steuern zahlen, ohne im Parlament vertreten zu sein («No taxation without representation»). Mit dem Tea Act 1773 erhielt die East India Company das Teemonopol, die Teesteuer blieb. Aus Protest warfen die Sons of Liberty am 16.12.1773 den Tee in den Bostoner Hafen. Sie verkleideten sich als Mohawk, um nicht erkannt zu werden und um zu zeigen, dass sie sich als Amerikaner und nicht als Briten verstanden.'},
+    {t:'Die Virginia Bill of Rights',
+     z:'Die Bedeutung der «Virginia Bill of Rights» erörtern können.',
+     h:'<ul><li>Am <b>12. Juni 1776</b> verabschiedet, vor allem von George Mason verfasst. Sie gilt als <b>erste Grundrechteerklärung</b> der Neuzeit.</li><li>Inhalt: Alle Menschen sind von Natur aus <b>gleich frei</b> und haben angeborene Rechte (Leben, Freiheit, Eigentum, Streben nach Glück). Alle Macht geht vom <b>Volk</b> aus. <b>Gewaltenteilung</b>, <b>Pressefreiheit</b>, <b>Religionsfreiheit</b>, faire Gerichtsverfahren und das Recht, eine schlechte Regierung abzusetzen.</li><li><b>Bedeutung</b>: Vorbild für die Unabhängigkeitserklärung (4. Juli 1776), die Bill of Rights der US-Verfassung (1791) und die französische Erklärung der Menschen- und Bürgerrechte (1789).</li><li><b>Kritik</b>: Die Rechte galten nicht für alle. Sklaven, Frauen und Indigene waren ausgeschlossen.</li></ul>',
+     q:'Was steht in der Virginia Bill of Rights, und warum ist sie so bedeutend?',
+     m:'Sie wurde am 12. Juni 1776 verabschiedet und erklärt, dass alle Menschen von Natur aus gleich frei sind und angeborene Rechte haben; alle Macht geht vom Volk aus; dazu Gewaltenteilung, Presse- und Religionsfreiheit. Sie war die erste Grundrechteerklärung und Vorbild für die Unabhängigkeitserklärung, die US-Bill of Rights und die französische Menschenrechtserklärung. Sie galt aber nicht für Sklaven, Frauen und Indigene.'},
+    {t:'Einfluss der Aufklärung',
+     z:'Bewerten können, inwiefern die amerikanische Unabhängigkeitsbewegung durch die aufklärerischen Schriften in Europa beeinflusst wurde.',
+     h:'<ul><li><b>John Locke</b>: Naturrechte (Leben, Freiheit, Eigentum), Gesellschaftsvertrag, Widerstandsrecht. Fast wörtlich in der Unabhängigkeitserklärung: «Life, Liberty and the pursuit of Happiness».</li><li><b>Montesquieu</b>: Gewaltenteilung in Legislative, Exekutive und Judikative. Grundlage der US-Verfassung.</li><li><b>Rousseau</b>: Volkssouveränität, die Macht geht vom Volk aus: «We the People».</li><li><b>Thomas Paine</b>: «Common Sense» (1776) verbreitete diese Ideen in einfacher Sprache und überzeugte viele, die Unabhängigkeit zu wollen.</li><li><b>Bewertung</b>: Der Einfluss war <b>sehr gross</b>, die Aufklärung lieferte die Begründung und die Ideen für die neue Ordnung. Auslöser waren aber auch <b>konkrete Gründe</b> wie Steuern, Handelsgesetze und die Proclamation Line, dazu englische Traditionen (Magna Carta, Bill of Rights 1689) und das puritanische Widerstandsrecht.</li></ul>',
+     q:'Wie stark wurde die amerikanische Unabhängigkeitsbewegung von der europäischen Aufklärung beeinflusst? Bewerte.',
+     m:'Sehr stark: Locke lieferte Naturrechte und Widerstandsrecht (Unabhängigkeitserklärung), Montesquieu die Gewaltenteilung (Verfassung), Rousseau die Volkssouveränität, und Paines «Common Sense» verbreitete diese Ideen. Die Aufklärung war aber nicht der einzige Grund: Auslöser waren konkrete Probleme wie Steuern und Handelsgesetze, dazu englische Freiheitstraditionen und das puritanische Widerstandsrecht.'},
+    {t:'Die amerikanische Verfassung',
+     z:'Die wichtigsten Elemente der amerikanischen Verfassung beschreiben können.',
+     h:'<ul><li>1787 in Philadelphia ausgearbeitet, seit <b>1789</b> in Kraft. Sie ersetzte die schwachen Konföderationsartikel.</li><li><b>Volkssouveränität</b>: «We the People» – die Macht geht vom Volk aus.</li><li><b>Republik</b> und <b>Föderalismus</b>: Macht ist zwischen dem Bund und den Einzelstaaten aufgeteilt.</li><li><b>Gewaltenteilung</b>: <b>Kongress</b> (Legislative) mit Senat (2 Senatoren pro Staat) und Repräsentantenhaus (nach Bevölkerung) · <b>Präsident</b> (Exekutive), alle 4 Jahre über Wahlmänner gewählt · <b>Oberster Gerichtshof</b> (Judikative).</li><li><b>Checks and Balances</b>: Die Gewalten kontrollieren sich gegenseitig.</li><li><b>Bill of Rights</b> (1791): die ersten 10 Zusatzartikel mit den Grundrechten, z. B. Rede-, Presse- und Religionsfreiheit.</li></ul>',
+     q:'Was sind die wichtigsten Elemente der amerikanischen Verfassung?',
+     m:'Volkssouveränität («We the People»), Republik und Föderalismus (Bund und Einzelstaaten teilen sich die Macht), Gewaltenteilung in Kongress (Senat und Repräsentantenhaus), Präsident und Oberster Gerichtshof, gegenseitige Kontrolle durch Checks and Balances und die Grundrechte in der Bill of Rights von 1791.'},
+    {t:'Checks and Balances',
+     z:'Bewerten können, inwiefern «Checks and Balances» sowie die Gewaltenteilung die Anhäufung von Macht in der amerikanischen Regierung verhindern.',
+     h:'<ul><li><b>Gewaltenteilung</b>: Gesetze machen, ausführen und richten liegen bei verschiedenen Organen.</li><li><b>Checks and Balances</b>: Die Organe bremsen sich gegenseitig.<ul><li>Der Präsident kann gegen Gesetze ein <b>Veto</b> einlegen; der Kongress kann es mit <b>Zweidrittelmehrheit</b> überstimmen.</li><li>Der <b>Senat</b> muss Richter, Minister und Verträge bestätigen.</li><li>Der Kongress kann den Präsidenten absetzen (<b>Impeachment</b>).</li><li>Der Oberste Gerichtshof kann Gesetze für <b>verfassungswidrig</b> erklären.</li></ul></li><li><b>Bewertung</b>: Keine Gewalt kann allein entscheiden, das verhindert Machtanhäufung wirksam. Nachteil: Es kann zu <b>Blockaden</b> kommen, wenn sich Präsident und Kongress nicht einig sind, und Entscheidungen dauern länger.</li></ul>',
+     q:'Wie verhindern Gewaltenteilung und Checks and Balances, dass jemand in der US-Regierung zu viel Macht bekommt? Bewerte.',
+     m:'Die Macht ist auf Kongress, Präsident und Gericht verteilt, und sie kontrollieren sich: Der Präsident hat ein Veto, das der Kongress mit zwei Dritteln überstimmen kann; der Senat bestätigt Richter und Verträge; der Kongress kann den Präsidenten absetzen; das Gericht kann Gesetze für verfassungswidrig erklären. So kann niemand allein entscheiden. Nachteil: Es kann zu Blockaden und langsamen Entscheiden kommen.'},
+    {t:'Glossar: Begriffe erklären',
+     z:'Alle Begriffe im Glossar mit Ihren eigenen Worten definieren und in den historischen Kontext setzen können.',
+     h:'<p>Die wichtigsten Begriffe findest du unter <b>Karteikarten</b>. Erkläre jeden Begriff in eigenen Worten und sag dazu, <b>wann</b> und <b>warum</b> er wichtig war.</p><p class="muted">Achtung: Das Glossar der Lehrperson lag nicht vor. Die Karteikarten enthalten die Begriffe, die im Thema typischerweise vorkommen. Vergleiche sie mit dem Glossar aus dem Unterricht und ergänze fehlende Begriffe unter «Eigene Karte hinzufügen».</p>',
+     q:'Erkläre in eigenen Worten: «No taxation without representation». Wann und warum war das wichtig?',
+     m:'Keine Steuern ohne Vertretung: Die Kolonisten wollten keine Steuern zahlen, die das britische Parlament beschloss, weil sie darin nicht vertreten waren. Das war ab 1764/65 (Sugar Act, Stamp Act) der zentrale Protest gegen Grossbritannien und führte zu Boykotten, zur Boston Tea Party und schliesslich zur Revolution.'}
+  ],
+  cards:[
+    ['Puritaner','Strenge Protestanten, die in England verfolgt wurden und in Nordamerika ihren Glauben frei leben wollten.'],
+    ['Mayflower Compact (1620)','Vertrag der Pilgerväter auf der Mayflower: Sie geben sich selbst Gesetze. Früher Schritt zur Selbstverwaltung.'],
+    ['Prädestination','Gott hat im Voraus bestimmt, wer erlöst wird. Erfolg und Fleiss galten als Zeichen der Erwählung.'],
+    ['Widerstandsrecht','Recht des Volkes, sich gegen eine ungerechte Regierung zu wehren und sie abzusetzen.'],
+    ['Aufklärung','Bewegung des 17./18. Jahrhunderts: Vernunft, Freiheit und Rechte des Menschen statt blindem Gehorsam.'],
+    ['Naturrechte','Rechte, die jeder Mensch von Geburt an hat: Leben, Freiheit, Eigentum (Locke).'],
+    ['Gesellschaftsvertrag','Die Regierung erhält ihre Macht vom Volk, um dessen Rechte zu schützen.'],
+    ['Merkantilismus','Wirtschaftspolitik: Kolonien liefern Rohstoffe und kaufen Fertigwaren des Mutterlands.'],
+    ['Navigation Acts','Britische Gesetze: Handel der Kolonien nur mit britischen Schiffen und nach Grossbritannien.'],
+    ['Siebenjähriger Krieg (1754–1763)','In Nordamerika «French and Indian War»: Grossbritannien besiegt Frankreich, hat danach hohe Schulden.'],
+    ['Royal Proclamation Line (1763)','Siedlungsverbot westlich der Appalachen, um Kriege mit Indigenen zu vermeiden. Kolonisten verärgert.'],
+    ['Stamp Act (1765)','Stempelsteuer auf Zeitungen und Dokumente. Löste heftige Proteste aus und wurde zurückgenommen.'],
+    ['No taxation without representation','Keine Steuern ohne Vertretung im Parlament: zentraler Protest der Kolonisten.'],
+    ['Boston Massacre (1770)','Britische Soldaten erschiessen in Boston fünf Kolonisten. Steigert die Wut auf Grossbritannien.'],
+    ['Tea Act (1773)','Teemonopol für die East India Company, die Teesteuer bleibt. Auslöser der Boston Tea Party.'],
+    ['Boston Tea Party (16.12.1773)','Sons of Liberty werfen, als Mohawk verkleidet, 342 Kisten Tee in den Hafen von Boston.'],
+    ['Sons of Liberty','Geheime Widerstandsgruppe der Kolonisten gegen britische Steuern (u. a. Samuel Adams).'],
+    ['Intolerable Acts (1774)','Strafgesetze nach der Tea Party, u. a. Schliessung des Hafens von Boston.'],
+    ['Kontinentalkongress','Versammlung von Vertretern der Kolonien (ab 1774), organisierte den Widerstand und erklärte 1776 die Unabhängigkeit.'],
+    ['Loyalisten und Patrioten','Loyalisten hielten zum britischen König, Patrioten kämpften für die Unabhängigkeit.'],
+    ['Common Sense (1776)','Schrift von Thomas Paine, die in einfacher Sprache für die Unabhängigkeit warb.'],
+    ['Virginia Bill of Rights (12.6.1776)','Erste Grundrechteerklärung: alle Menschen gleich frei, Macht vom Volk, Presse- und Religionsfreiheit.'],
+    ['Unabhängigkeitserklärung (4.7.1776)','Die 13 Kolonien erklären sich von Grossbritannien unabhängig; begründet mit den Naturrechten (Jefferson).'],
+    ['Unabhängigkeitskrieg (1775–1783)','Krieg der Kolonien gegen Grossbritannien, mit Hilfe Frankreichs gewonnen; Frieden von Paris 1783.'],
+    ['Konföderationsartikel','Erste lose Verfassung der USA (ab 1781) mit schwacher Zentralregierung; 1789 durch die Verfassung ersetzt.'],
+    ['Verfassung (1787/1789)','Grundgesetz der USA: Volkssouveränität, Föderalismus, Gewaltenteilung, Checks and Balances.'],
+    ['Föderalismus','Die Macht ist zwischen dem Bund und den Einzelstaaten aufgeteilt.'],
+    ['Gewaltenteilung','Gesetzgebung, Ausführung und Rechtsprechung liegen bei verschiedenen Organen (Montesquieu).'],
+    ['Checks and Balances','Die drei Gewalten kontrollieren und bremsen sich gegenseitig, z. B. durch das Veto des Präsidenten.'],
+    ['Bill of Rights (1791)','Die ersten 10 Zusatzartikel der US-Verfassung mit den Grundrechten.'],
+    ['Volkssouveränität','Alle Staatsgewalt geht vom Volk aus: «We the People».']
+  ]
+};
+// Quiz: [Lernziel 0–11, Frage, [richtig, falsch, falsch, falsch], Erklärung]
+const BG_Q = [
+  [0,'Warum wanderten die Puritaner nach Nordamerika aus?',['Sie wurden in England wegen ihres Glaubens verfolgt und wollten ihn frei leben.','Sie suchten Gold.','Der König schickte sie als Soldaten.','Sie wollten die anglikanische Kirche nach Amerika bringen.'],'Religionsfreiheit war der Hauptgrund.'],
+  [0,'Was meinte John Winthrop mit der «City upon a Hill»?',['Eine vorbildliche, gottgefällige Gemeinschaft, auf die die ganze Welt schaut','Eine befestigte Stadt auf einem Berg','Die neue Hauptstadt der Kolonien','Eine Stadt nur für Händler'],''],
+  [0,'Was war der Mayflower Compact (1620)?',['Ein Vertrag, in dem sich die Siedler selbst Gesetze gaben und sich ihnen unterwarfen','Ein Handelsvertrag mit den Indigenen','Ein Friedensvertrag mit Frankreich','Die erste Verfassung der USA'],'Ein früher Schritt zur Selbstverwaltung.'],
+  [1,'Was besagt die Prädestinationslehre?',['Gott hat im Voraus bestimmt, wer erlöst wird.','Jeder kann sich die Erlösung durch Spenden kaufen.','Alle Menschen werden erlöst.','Der König bestimmt, wer erlöst wird.'],'Erfolg und Fleiss galten als Zeichen der Erwählung.'],
+  [1,'Was bedeutet das Widerstandsrecht?',['Das Volk darf sich gegen eine ungerechte Regierung wehren und sie absetzen.','Der König darf Widerstand mit Gewalt brechen.','Jeder darf Steuern verweigern, wann er will.','Nur die Kirche darf Widerstand leisten.'],''],
+  [1,'Welcher Aufklärer begründete das Widerstandsrecht mit den Naturrechten?',['John Locke','Ludwig XIV.','Johannes Calvin','George Washington'],'Locke: Leben, Freiheit, Eigentum; die Regierung muss sie schützen.'],
+  [2,'Welche Wirtschaft prägte die südlichen Kolonien?',['Grosse Plantagen mit Tabak und Reis, betrieben mit Sklaven','Fischerei und Schiffbau','Kleine Bauernhöfe mit Getreide','Industrie und Fabriken'],''],
+  [2,'Was war typisch für die nördlichen Kolonien (Neuengland)?',['Kleine Farmen, Fischerei, Schiffbau, Handel und puritanische Prägung','Grosse Plantagen mit Sklaven','Riesige Weizenfelder','Kein Handel, nur Landwirtschaft'],''],
+  [2,'Was zeichnete die mittleren Kolonien wie Pennsylvania aus?',['Fruchtbarer Boden für Getreide und religiöse Vielfalt und Toleranz','Strenge puritanische Einheit','Grösste Sklavenplantagen','Keine Städte'],'Pennsylvania wurde von Quäkern gegründet und war tolerant.'],
+  [3,'Warum durften in den Kolonien mehr Männer wählen als in Grossbritannien?',['Das Wahlrecht hing am Landbesitz, und in den Kolonien gab es viel billiges Land.','In den Kolonien durften alle Menschen wählen.','Der König verschenkte das Wahlrecht.','In Grossbritannien gab es keine Wahlen.'],''],
+  [3,'Wer war auch in den Kolonien vom Wahlrecht ausgeschlossen?',['Frauen, Sklaven und Indigene','Nur Sklaven','Nur Frauen','Niemand'],''],
+  [4,'Was war die Rolle der Kolonien im Merkantilismus?',['Rohstoffe liefern und Fertigwaren des Mutterlands kaufen','Fertigwaren nach Europa verkaufen','Gold an Spanien liefern','Sich selbst versorgen ohne Handel'],''],
+  [4,'Was regelten die Navigation Acts?',['Die Kolonien durften wichtige Waren nur mit britischen Schiffen und nach Grossbritannien handeln.','Die Schifffahrt auf den Flüssen','Den Bau von Leuchttürmen','Den freien Handel mit allen Ländern'],''],
+  [4,'Was bedeutete «salutary neglect»?',['London setzte seine Gesetze lange nur locker durch, die Kolonien verwalteten sich weitgehend selbst.','Grossbritannien kontrollierte die Kolonien sehr streng.','Die Kolonien zahlten keine Steuern an Spanien.','Ein Gesetz gegen Schmuggel'],''],
+  [5,'Worum ging es im Siebenjährigen Krieg in Nordamerika?',['Grossbritannien und Frankreich kämpften um die Gebiete im Westen, vor allem das Ohio-Tal.','Die Kolonien kämpften gegen Grossbritannien.','Spanien und Portugal stritten um Florida.','Es war ein Bürgerkrieg zwischen Nord und Süd.'],''],
+  [5,'Was verbot die Royal Proclamation Line von 1763?',['Das Siedeln westlich der Appalachen','Den Teehandel','Den Bau von Kirchen','Das Wählen für Kolonisten'],'Damit wollte London teure Kriege mit den Indigenen vermeiden.'],
+  [5,'Warum erhob Grossbritannien nach 1763 neue Steuern in den Kolonien?',['Der Krieg hatte hohe Schulden hinterlassen, die Kolonien sollten mitzahlen.','Die Kolonien hatten zu viel Gold.','Frankreich verlangte es im Friedensvertrag.','Um Schulen zu bauen'],''],
+  [6,'Was bedeutet «No taxation without representation»?',['Keine Steuern, solange die Kolonien nicht im Parlament vertreten sind','Keine Steuern für Arme','Steuern nur für Vertreter','Keine Vertretung ohne Steuern'],''],
+  [6,'Wann fand die Boston Tea Party statt?',['16. Dezember 1773','4. Juli 1776','12. Juni 1776','1620'],''],
+  [6,'Warum verkleideten sich die Sons of Liberty als Mohawk?',['Um nicht erkannt zu werden und um zu zeigen, dass sie sich als Amerikaner sahen','Weil es ein Fest war','Um die Indigenen zu beschuldigen und einen Krieg auszulösen','Weil der König es verlangte'],''],
+  [6,'Wie reagierte Grossbritannien auf die Boston Tea Party?',['Mit den Intolerable Acts, u. a. wurde der Hafen von Boston geschlossen','Es schaffte alle Steuern ab','Es erklärte die Kolonien für unabhängig','Es senkte den Teepreis'],''],
+  [7,'Wann wurde die Virginia Bill of Rights verabschiedet?',['12. Juni 1776','4. Juli 1776','1789','1620'],'Knapp einen Monat vor der Unabhängigkeitserklärung.'],
+  [7,'Was steht in der Virginia Bill of Rights?',['Alle Menschen sind von Natur aus gleich frei; alle Macht geht vom Volk aus.','Der König hat alle Macht.','Nur Landbesitzer haben Rechte.','Die Kolonien gehören zu Frankreich.'],''],
+  [7,'Wofür war die Virginia Bill of Rights ein Vorbild?',['Für die Unabhängigkeitserklärung, die US-Bill of Rights und die französische Menschenrechtserklärung','Für die Navigation Acts','Für den Stamp Act','Für die Royal Proclamation Line'],''],
+  [8,'Welche Idee übernahm die US-Verfassung von Montesquieu?',['Die Gewaltenteilung','Die Prädestination','Den Merkantilismus','Die absolute Monarchie'],''],
+  [8,'Welche Schrift von Thomas Paine warb 1776 für die Unabhängigkeit?',['Common Sense','Der Gesellschaftsvertrag','Vom Geist der Gesetze','Die Bill of Rights'],''],
+  [8,'Welcher Satz der Unabhängigkeitserklärung geht auf Locke zurück?',['Life, Liberty and the pursuit of Happiness','We the People','No taxation without representation','City upon a Hill'],''],
+  [9,'Seit wann ist die amerikanische Verfassung in Kraft?',['1789','1776','1620','1791'],'Ausgearbeitet 1787 in Philadelphia.'],
+  [9,'Wie ist der Kongress aufgebaut?',['Senat (2 pro Staat) und Repräsentantenhaus (nach Bevölkerung)','Nur ein Senat mit Adligen','Präsident und Gericht','Nur gewählte Gouverneure'],''],
+  [9,'Was bedeutet Föderalismus?',['Die Macht ist zwischen dem Bund und den Einzelstaaten aufgeteilt.','Der Präsident hat alle Macht.','Die Einzelstaaten sind abgeschafft.','Es gibt nur eine Partei.'],''],
+  [9,'Was ist die Bill of Rights von 1791?',['Die ersten 10 Zusatzartikel der Verfassung mit den Grundrechten','Ein Steuergesetz','Die Unabhängigkeitserklärung','Ein Vertrag mit Frankreich'],''],
+  [10,'Wie kann der Kongress ein Veto des Präsidenten überstimmen?',['Mit einer Zweidrittelmehrheit in beiden Kammern','Mit einfacher Mehrheit','Gar nicht','Nur mit Zustimmung des Königs'],''],
+  [10,'Wer muss die Ernennung von Bundesrichtern bestätigen?',['Der Senat','Das Repräsentantenhaus allein','Die Gouverneure','Niemand, der Präsident entscheidet allein'],''],
+  [10,'Was ist ein Nachteil von Checks and Balances?',['Es kann zu Blockaden und langsamen Entscheidungen kommen.','Ein Einzelner bekommt zu viel Macht.','Es gibt keine Gerichte mehr.','Das Volk kann nicht mehr wählen.'],''],
+  [10,'Wie kann der Kongress einen Präsidenten absetzen?',['Durch ein Impeachment-Verfahren','Durch ein Veto','Durch einen Volksentscheid','Gar nicht'],'']
+];
+const BG_QUIZ = BG_Q.map(r => ({q:r[1], a:r[2], x:r[3]}));
+function bankBG(){
+  const B = [];
+  BG_Q.forEach((r,i) => B.push({topic:BG.goals[r[0]].t, key:'q'+i, make:() => mcQ({q:r[1], a:r[2], x:r[3]})}));
+  addCardQs(B, BG.cards, BG.goals[11].t);
+  return {topics:BG.goals.map(g => g.t), bank:B};
+}
+function viewBGOverview(v){
+  const g = store.get('bg.goals',{}), date = store.get('bg.date',''), n = BG.goals.filter((_,i) => g[i]).length, d = examDays({id:'bg'});
+  const big = d===null ? '' : d>0 ? `<div class="big">${d}</div><div><h3 style="margin:0">Tag${d===1?'':'e'} bis zur Prüfung</h3><p class="muted" style="margin:var(--s1) 0 0">${pDate(date).toLocaleDateString('de-CH',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}</p></div>`
+    : d===0 ? '<div class="big">0</div><h3>Heute ist die Prüfung. Viel Erfolg!</h3>' : '<div class="big">–</div><h3>Die Prüfung ist vorbei</h3>';
+  v.innerHTML = `<div class="card countdown">${big || '<div><h3 style="margin:0">Wann ist die Prüfung?</h3><p class="muted" style="margin:var(--s1) 0 0">Die Prüfung ist nächste Woche. Trag das Datum ein, dann siehst du hier einen Countdown.</p></div>'}
+      <div class="row" style="margin-left:auto"><label class="muted" for="bgdate">Prüfungsdatum</label><input type="date" id="bgdate" value="${esc(date)}"></div></div>
+    <div class="card"><h3>So lernst du für die Prüfung</h3><ol><li><b>Theorie</b>: zu jedem Lernziel das Wichtigste.</li><li><b>Übungen</b>: Quiz und offene Prüfungsfragen mit Musterantwort.</li><li><b>Karteikarten</b>: alle Begriffe aus dem Glossar.</li><li><b>Probetest</b>: gemischt, mit Note.</li></ol>
+      <p class="muted" style="font-size:var(--t-xs)">Unterlagen im Unterricht: Dossier «Die Geschichte der amerikanischen Revolution», PPT «Die Amerikanische Revolution», PPT «Die Puritaner», Glossar. Diese lagen hier nicht vor; die Inhalte in der App sind selbst geschrieben. Vergleiche sie mit dem Dossier.</p>
+      <div class="row"><button class="btn" data-go="theory">Zur Theorie</button><button class="btn ghost" data-go="ex">Übungen</button><button class="btn ghost" data-go="test">Probetest</button><button class="btn ghost" data-go="cards">Karteikarten</button></div></div>
+    <div class="card"><h3>Lernziele: Was kann ich schon?</h3><p class="muted">${n} von ${BG.goals.length} abgehakt. Hake nur ab, was du in eigenen Worten erklären kannst.</p>
+      <div class="progress" style="margin-bottom:var(--s2)"><i style="width:${Math.round(n/BG.goals.length*100)}%"></i></div>
+      ${BG.goals.map((x,i) => `<label class="goal"><input type="checkbox" data-g="${i}" ${g[i]?'checked':''}><span><b>${i+1}.</b> ${esc(x.z)}</span></label>`).join('')}</div>`;
+  v.querySelectorAll('[data-g]').forEach(c => c.onchange = () => { const gg = store.get('bg.goals',{}); gg[c.dataset.g] = c.checked; store.set('bg.goals',gg); viewBGOverview(v); renderSide(); });
+  v.querySelectorAll('[data-go]').forEach(b => b.onclick = () => { tab = b.dataset.go; store.set('tab',tab); exOpen = null; render(); window.scrollTo(0,0); });
+  $('#bgdate').onchange = ev => { store.set('bg.date', ev.target.value); viewBGOverview(v); renderSide(); };
+}
+function viewBGEx(v){
+  const best = store.get(qk('quizBest'),null), wrong = store.get(qk('quizWrong'),[]);
+  v.innerHTML = `<div class="card quizhero"><div><h3>Quiz</h3><p class="muted" style="margin:0">10 zufällige Fragen aus ${BG_QUIZ.length}${best!==null ? ` · Bestes Ergebnis: ${best} / 10` : ''}.</p></div>
+      <div class="row"><button class="btn" id="bgQ">Quiz starten</button>${wrong.length ? `<button class="btn ghost" id="bgW">Fehler üben (${wrong.length})</button>` : ''}</div></div>
+    <div class="card"><h3>Prüfungsfragen in eigenen Worten</h3><p class="muted">Beantworte jede Frage zuerst laut oder auf Papier, dann vergleiche mit der Musterantwort.</p>
+      ${BG.goals.map((x,i) => `<details class="bgq"><summary><b>${i+1}.</b> ${esc(x.q)}</summary><p>${esc(x.m)}</p></details>`).join('')}</div>`;
+  $('#bgQ').onclick = () => startQuiz(false);
+  if($('#bgW')) $('#bgW').onclick = () => startQuiz(true);
+}
+const BANKS = {bw:bankBW, bz:bankFRA, bn:bankBN, bg:bankBG};
 
 // Themen werden reihum gemischt, damit jedes gewählte Thema vorkommt
 function buildPTest(sid, n, topics){
@@ -3065,7 +3240,7 @@ function bankBN(){
   addCardQs(B, BN.cards, CH_T.b);
   return {topics:Object.values(CH_T), bank:B};
 }
-function examDays(s){ const k = s.id==='bz' ? 'bz.date' : s.id==='bn' ? 'bn.date' : null; const d = k && store.get(k, k==='bn.date' ? BN_EXAM : k==='bz.date' ? BZ_EXAM : ''); if(!d) return null; const t = new Date(); t.setHours(0,0,0,0); return Math.round((pDate(d)-t)/86400000); }
+function examDays(s){ const k = s.id==='bz' ? 'bz.date' : s.id==='bn' ? 'bn.date' : s.id==='bg' ? 'bg.date' : null; const d = k && store.get(k, k==='bn.date' ? BN_EXAM : k==='bz.date' ? BZ_EXAM : ''); if(!d) return null; const t = new Date(); t.setHours(0,0,0,0); return Math.round((pDate(d)-t)/86400000); }
 const goLab = sec => { LAB.sec = sec; tab = 'lab'; store.set('tab',tab); exOpen = null; render(); window.scrollTo(0,0); };
 const BN_EXAM = '2026-11-09';   // laut Teams, kann im Feld geändert werden
 function viewBNOverview(v){
@@ -3732,7 +3907,7 @@ function render(){
   renderSide();
   const s = SUBJECTS.find(x => x.id===cur);
   const rs = document.documentElement.style; rs.setProperty('--c', s.color); rs.setProperty('--g1', s.g1); rs.setProperty('--g2', s.g2);
-  const st = subjStatus(s), chapter = s.id==='bw' ? BW.chapter : s.id==='bn' ? BN.chapter : s.id==='bz' ? FRA.chapter : s.id==='m3' ? 'Leitfaden: 16 Kompetenznachweise in 4 Niveaus' : 'Noch keine Unterlagen eingebaut';
+  const st = subjStatus(s), chapter = s.id==='bw' ? BW.chapter : s.id==='bn' ? BN.chapter : s.id==='bz' ? FRA.chapter : s.id==='m3' ? 'Leitfaden: 16 Kompetenznachweise in 4 Niveaus' : s.id==='bg' ? BG.chapter : 'Noch keine Unterlagen eingebaut';
   const kick = s.kick || ['BIN26a','BMZ'].concat(s.teacher ? [s.teacher] : []).join(' · '), R = 34, C = 2*Math.PI*R;
   const tabs = s.id==='m3' ? [['overview','Leitfaden'],['kn','Kompetenzen'],['gs','KI-Gespräch'],['theory','Theorie'],['ex','Übungen'],['test','Probetest'],['cards','Karteikarten'],['notes','Notizen']] : [['overview','Übersicht'],['theory','Theorie'],...(s.id==='bn' ? [['lab','Labor']] : []),['ex','Übungen'],['test','Probetest'],['cards','Karteikarten'],['notes','Notizen']];
   $('#main').innerHTML = `
@@ -6706,7 +6881,7 @@ const G_EXAMS = [
   {s:'bn', d:'2026-11-09', t:'Prüfung Chemie', info:'nicht grafikfähiger Taschenrechner'},
   {s:'bz', d:'2026-11-23', t:'Prüfung Adj. / Adv. + Voci', info:'Leseverstehen, Hörverstehen, Grammaire, Voci, Übersetzung, zählt 1.0'}
 ];
-const G_NODATE = [['bw','Wirtschaft und Recht: Kapitel 2 «Unternehmensmodell und Strategie»: Dossier im Team, Termin noch offen'], ['bg','Geschichte und Politik: kein neuer Termin']];   // zählen zum Gesamtschnitt der Berufsmaturität
+const G_NODATE = [['bw','Wirtschaft und Recht: Kapitel 2 «Unternehmensmodell und Strategie»: Dossier im Team, Termin noch offen'], ['bg','Geschichte und Politik: Prüfung «Die amerikanische Revolution 1763–1789» nächste Woche, Datum unter Geschichte eintragbar']];   // zählen zum Gesamtschnitt der Berufsmaturität
 const G_SVG = {
   edit:'<path d="M4 20h4L19 9l-4-4L4 16v4zM13.5 6.5l4 4"/>',
   del:'<path d="M5 7h14M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/>',
@@ -6921,6 +7096,7 @@ function viewOverview(v, s){
   if(s.id==='bz') return viewFRAOverview(v);
   if(s.id==='bn') return viewBNOverview(v);
   if(s.id==='m3') return viewM3Overview(v);
+  if(s.id==='bg') return viewBGOverview(v);
   if(s.id!=='bw'){
     v.innerHTML = `<div class="card"><h3>Noch keine Unterlagen</h3>
       <p class="muted">Für dieses Fach sind noch keine Materialien eingebaut. Du kannst schon jetzt eigene Karteikarten und Notizen anlegen.
@@ -6946,6 +7122,7 @@ function viewOverview(v, s){
 function viewTheory(v, s){
   if(s.id==='bn'){ v.innerHTML = chTheory().map(t => `<div class="card"><h3>${esc(t.t)}</h3>${t.h}</div>`).join(''); v.querySelectorAll('[data-lab]').forEach(b => b.onclick = () => goLab(b.dataset.lab)); return; }
   if(s.id==='m3') return viewM3Theory(v);
+  if(s.id==='bg'){ v.innerHTML = BG.goals.map((g,i) => `<div class="card"><h3>${i+1}. ${esc(g.t)}</h3><p class="muted" style="font-size:var(--t-xs)">Lernziel: ${esc(g.z)}</p>${g.h}</div>`).join(''); return; }
   if(s.id==='bz'){ v.innerHTML = fzTheory(); fzBindSay(v); fzBindTheory(v); return; }
   if(s.id!=='bw'){ v.innerHTML = `<div class="card empty">Noch keine Theorie für dieses Fach. Nutze vorerst die Notizen.</div>`; return; }
   v.innerHTML = BW.theory.map(t => `<div class="card"><h3>${esc(t.t)}</h3>${t.h}</div>`).join('');
@@ -6960,7 +7137,7 @@ function viewNotes(v, s){
 /* ---------- Karteikarten ---------- */
 function viewCards(v, s){
   const own = store.get('cards.'+s.id,[]);
-  const base = s.id==='bw' ? BW.cards : s.id==='bz' ? FRA.cards : s.id==='bn' ? BN.cards : s.id==='m3' ? M3_CARDS : [];
+  const base = s.id==='bw' ? BW.cards : s.id==='bz' ? FRA.cards : s.id==='bn' ? BN.cards : s.id==='m3' ? M3_CARDS : s.id==='bg' ? BG.cards : [];
   const all = base.concat(own);
   const known = store.get('known.'+s.id,{});
   let queue = all.map((c,i) => i).filter(i => !known[all[i][0]]);
@@ -6993,6 +7170,7 @@ function viewCards(v, s){
 
 /* ---------- Übungen ---------- */
 function viewExercises(v, s){
+  if(s.id==='bg') return exOpen==='quiz' ? viewQuiz(v) : viewBGEx(v);
   const EXERCISES = exList();
   if(s.id!=='bw' && s.id!=='bz' && s.id!=='bn' && s.id!=='m3'){ v.innerHTML = `<div class="card empty">Noch keine Übungen für dieses Fach. Lade die Unterlagen hoch, dann können sie ergänzt werden.</div>`; return; }
   if(exOpen==='quiz') return viewQuiz(v);
